@@ -1,2 +1,1 @@
-def hello() -> str:
-    return "Hello from blaise!"
+from blaise.ciphers.vigenere import Vigenere

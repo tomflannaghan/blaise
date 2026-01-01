@@ -1,6 +1,6 @@
 from .base import Cipher
 
-class VigenereCipher(Cipher):
+class Vigenere(Cipher):
     """
     Simple Vigenère cipher implementation.
 
