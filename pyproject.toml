@@ -18,5 +18,8 @@ pythonpath = ["src"]
 
 [dependency-groups]
 dev = [
+    "autodoc>=0.5.0",
     "pytest>=9.0.2",
+    "sphinx>=6",
+    "sphinx-rtd-theme>=3",
 ]
