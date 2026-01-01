@@ -4,8 +4,8 @@ class Vigenere(Cipher):
     """
     Simple Vigenère cipher implementation.
 
-    The cipher operates on the 26‑letter English alphabet.
-    Non‑alphabetic characters are left unchanged.
+    The cipher operates on the 26-letter English alphabet.
+    Non-alphabetic characters are left unchanged.
     """
 
     def __init__(self, key: str):
@@ -52,3 +52,11 @@ class Vigenere(Cipher):
                 result.append(ch)
 
         return "".join(result)
+
+
+def encrypt_vigenere(plaintext: str, key: str) -> str:
+    return Vigenere(key).encrypt(plaintext)
+
+
+def decrypt_vigenere(ciphertext: str, key: str) -> str:
+    return Vigenere(key).decrypt(ciphertext)
