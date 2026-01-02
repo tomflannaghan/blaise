@@ -2,7 +2,6 @@ from blaise.strings import check_is_alpha
 
 
 def _shift(char: str, shift: int) -> str:
-    """Shift a single alphabetic character by `shift` positions."""
     if char.isupper():
         base = ord("A")
     else:
