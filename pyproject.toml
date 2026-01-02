@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "Tom Flannaghan", email = "tom@flannaghan.com" }
 ]
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = []
 
 [build-system]
@@ -19,8 +19,9 @@ pythonpath = ["src"]
 [dependency-groups]
 dev = [
     "autodoc>=0.5.0",
-    "mypy>=1.19.1",
     "pytest>=9.0.2",
+    "ruff>=0.14.10",
     "sphinx>=6",
     "sphinx-rtd-theme>=3",
+    "ty>=0.0.8",
 ]

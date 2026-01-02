@@ -27,21 +27,25 @@ def test_normalize_non_ascii_removed():
     assert normalize_string("你好") == ""
     assert normalize_string("Hello, 世界!") == "HELLO"
 
+
 def test_is_alpha_basic():
     """is_alpha should return True for pure ASCII alphabetic strings."""
     assert is_alpha("abc") is True
     assert is_alpha("ABC") is True
     assert is_alpha("AbC") is True
 
+
 def test_is_alpha_non_ascii():
     """is_alpha should return False for strings containing non‑ASCII letters."""
     assert is_alpha("áéí") is False
     assert is_alpha("café") is False
 
+
 def test_is_alpha_non_alpha():
     """is_alpha should return False for strings containing digits or punctuation."""
     assert is_alpha("abc123") is False
     assert is_alpha("hello!") is False
+
 
 def test_check_is_alpha_raises_on_invalid():
     """check_is_alpha should raise ValueError when the string is not all ASCII letters."""
@@ -49,4 +53,3 @@ def test_check_is_alpha_raises_on_invalid():
         check_is_alpha("abc123")
     with pytest.raises(ValueError):
         check_is_alpha("café")
-
