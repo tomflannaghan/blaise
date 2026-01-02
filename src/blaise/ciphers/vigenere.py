@@ -14,9 +14,6 @@ def _to_key(k: str) -> str:
     return k.upper()
 
 
-
-
-
 def encrypt_vigenere(plaintext: str, key: str) -> str:
     """Encrypt ``plaintext`` using the Vigenère cipher.
 
