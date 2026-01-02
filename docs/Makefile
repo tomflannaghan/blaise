@@ -11,8 +11,8 @@ clean:
 	rm -rf _build
 
 html:
-	sphinx-build -b html . _build/html
+	uv run sphinx-build -b html . _build/html
 
 pdf:
-	sphinx-build -b latex . _build/latex
+	uv run sphinx-build -b latex . _build/latex
 	cd _build/latex && make all-pdf
