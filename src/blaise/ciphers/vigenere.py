@@ -16,6 +16,24 @@ def _to_key(k: str) -> str:
 
 
 def encrypt_vigenere(plaintext: str, key: str) -> str:
+    """Encrypt ``plaintext`` using the Vigenère cipher.
+
+    Parameters
+    ----------
+    plaintext:
+        The text to encrypt. Non‑alphabetic characters are preserved
+        unchanged.
+    key:
+        The encryption key. It must consist only of alphabetic
+        characters; the function will raise a ``ValueError`` if this
+        condition is not met.
+
+    Returns
+    -------
+    str
+        The ciphertext produced by applying the Vigenère shift to each
+        alphabetic character of ``plaintext``.
+    """
     key = _to_key(key)
 
     result = []
@@ -34,6 +52,23 @@ def encrypt_vigenere(plaintext: str, key: str) -> str:
 
 
 def decrypt_vigenere(ciphertext: str, key: str) -> str:
+    """Decrypt ``ciphertext`` that was encrypted with the Vigenère cipher.
+
+    Parameters
+    ----------
+    ciphertext:
+        The text to decrypt. Non‑alphabetic characters are preserved
+        unchanged.
+    key:
+        The decryption key. It must consist only of alphabetic
+        characters; the function will raise a ``ValueError`` if this
+        condition is not met.
+
+    Returns
+    -------
+    str
+        The original plaintext recovered from ``ciphertext``.
+    """
     key = _to_key(key)
 
     result = []
