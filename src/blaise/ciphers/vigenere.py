@@ -14,7 +14,7 @@ def _to_key(k: str) -> str:
     return k.upper()
 
 
-def encrypt_vigenere(plaintext: str, key: str) -> str:
+def vigenere_encrypt(plaintext: str, key: str) -> str:
     """Encrypt ``plaintext`` using the Vigenère cipher.
 
     Parameters
@@ -50,7 +50,7 @@ def encrypt_vigenere(plaintext: str, key: str) -> str:
     return "".join(result)
 
 
-def decrypt_vigenere(ciphertext: str, key: str) -> str:
+def vigenere_decrypt(ciphertext: str, key: str) -> str:
     """Decrypt ``ciphertext`` that was encrypted with the Vigenère cipher.
 
     Parameters
