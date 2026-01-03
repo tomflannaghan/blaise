@@ -22,7 +22,11 @@ def test_calculate_ngrams_unigrams_and_bigrams() -> None:
     assert unigrams == {"A": 0.25, "B": 0.25, "C": 0.25, "D": 0.25}
     # Bigrams
     bigrams = calculate_ngrams(text, 2)
-    assert bigrams == {"AB": 0.3333333333333333, "BC": 0.3333333333333333, "CD": 0.3333333333333333}
+    assert bigrams == {
+        "AB": 0.3333333333333333,
+        "BC": 0.3333333333333333,
+        "CD": 0.3333333333333333,
+    }
 
 
 def test_calculate_ngrams_edge_cases() -> None:
