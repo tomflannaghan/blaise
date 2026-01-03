@@ -1,4 +1,5 @@
 from collections import Counter
+import math
 
 
 def calculate_ngrams(text: str, n: int) -> dict[str, float]:
@@ -23,3 +24,21 @@ def calculate_ngrams(text: str, n: int) -> dict[str, float]:
     counts = Counter(ngrams)
     total = sum(counts.values())
     return {gram: count / total for gram, count in counts.items()}
+
+
+def bd_score(dist1: dict[str, float], dist2: dict[str, float]) -> float:
+    """
+    Calculates the Bhattacharyya distance (https://en.wikipedia.org/wiki/Bhattacharyya_distance)
+    of two distributions.
+
+    """
+    return -math.log(
+        sum(
+            (dist1.get(k, 0) * dist2.get(k, 0)) ** 2
+            for k in dist1.keys() | dist2.keys()
+        )
+    )
+
+
+def ngram_score(text: str, n: int, expected: dict[str, float]) -> float:
+    return bd_score(expected, calculate_ngrams(text, n))
