@@ -4,7 +4,7 @@ Blaise is a package for encrypting, decrypting and cracking classical cryptograp
 
 ## Documentation
 
-See https://github.com/tomflannaghan/blaise/
+See https://tomflannaghan.github.io/blaise/
 
 ## Supported Ciphers
 
