@@ -61,8 +61,7 @@ def ngram_top_n(
     top_n: int = 10,
     key: Callable = lambda x: x,
 ) -> list:
-    ordered = sorted(
-        iterable, key=lambda x: ngram_score(key(x), n, expected=expected))
+    ordered = sorted(iterable, key=lambda x: ngram_score(key(x), n, expected=expected))
     return ordered[:top_n]
 
 
