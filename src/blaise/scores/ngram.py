@@ -1,5 +1,4 @@
 from collections import Counter
-from functools import lru_cache
 import math
 from typing import Callable, Iterable
 

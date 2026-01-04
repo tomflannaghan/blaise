@@ -5,9 +5,9 @@ def product_index_ordered(*iterators):
     [0, 0], [1, 0], [0, 1], [2, 0], [1, 1], [0, 2], [2, 1], [1, 2], ... etc.
     """
     lists = [list(i) for i in iterators]
-    if any(len(l) == 0 for l in lists):
+    if any(len(x) == 0 for x in lists):
         return
-    max_index_sum = sum(len(l) - 1 for l in lists)
+    max_index_sum = sum(len(x) - 1 for x in lists)
     for index_sum in range(max_index_sum + 1):
         yield from _product_index_ordered(max_index_sum, index_sum, lists)
 
