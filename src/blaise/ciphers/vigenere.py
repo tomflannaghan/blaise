@@ -1,4 +1,7 @@
+from itertools import zip_longest
 from typing import Iterable
+from blaise.ciphers.caesar import caesar_crack
+from blaise.iterators import product_index_ordered
 from blaise.scores.ngram import ngram_top_n
 from blaise.strings import check_is_alpha
 
@@ -89,19 +92,19 @@ def vigenere_decrypt(ciphertext: str, key: str) -> str:
 
 def vigenere_crack(
     ciphertext: str,
-    key_length: int | Iterable[int] = range(1, 10),
+    key_length: int | Iterable[int] = range(3, 8),
     top_n=10,
-    n_trials: int = 100000,
+    n_trials: int = 1000,
     ngram_dist="en_wiki",
-    ngram_n=3,
+    ngram_n=2,
 ) -> list[tuple[str, str]]:
     """
     Cracks Vigenere. Returns the top n results in pairs of (key, plaintext).
     """
-    results = []
+    vigenere_results = []
     if isinstance(key_length, Iterable):
         for key_len in key_length:
-            results += vigenere_crack(
+            vigenere_results += vigenere_crack(
                 ciphertext,
                 key_len,
                 top_n=top_n,
@@ -110,8 +113,27 @@ def vigenere_crack(
                 n_trials=n_trials,
             )
     else:
-        raise NotImplementedError()
+        caesar_results = []
+        for i in range(key_length):
+            subsec = ciphertext[i::key_length]
+            # Note ngram here is 1 because the sections are not contiguous - only letter freqs are usable.
+            caesar_results.append(
+                caesar_crack(subsec, ngram_n=1, ngram_dist=ngram_dist, is_norm=True)
+            )
+
+        for combo in product_index_ordered(*caesar_results):
+            plaintext = "".join(
+                sum(zip_longest(*[res[1] for res in combo], fillvalue=""), ())
+            )
+            key = "".join(chr(ord("A") + res[0]) for res in combo)
+            vigenere_results.append((key, plaintext))
+            if len(vigenere_results) > n_trials:
+                break
 
     return ngram_top_n(
-        results, n=ngram_n, expected=ngram_dist, top_n=top_n, key=lambda x: x[1]
+        vigenere_results,
+        n=ngram_n,
+        expected=ngram_dist,
+        top_n=top_n,
+        key=lambda x: x[1],
     )

@@ -1,4 +1,5 @@
 from collections import Counter
+from functools import lru_cache
 import math
 from typing import Callable, Iterable
 
@@ -61,10 +62,12 @@ def ngram_top_n(
     top_n: int = 10,
     key: Callable = lambda x: x,
 ) -> list:
-    ordered = sorted(iterable, key=lambda x: ngram_score(key(x), n, expected=expected))
-    return ordered[:top_n]
+    with_sort_key = [(ngram_score(key(v), n, expected=expected), v) for v in iterable]
+    ordered = sorted(with_sort_key, key=lambda x: x[0])
+    return [x[1] for x in ordered[:top_n]]
 
 
+@lru_cache(10000)
 def load_ngram_dist(name: str, n: int) -> dict[str, float]:
     return load_data("ngram_dist", f"{name}_{n}")
 

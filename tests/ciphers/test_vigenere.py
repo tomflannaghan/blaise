@@ -1,6 +1,6 @@
 import pytest
 
-from blaise.ciphers.vigenere import vigenere_encrypt, vigenere_decrypt
+from blaise.ciphers.vigenere import vigenere_crack, vigenere_encrypt, vigenere_decrypt
 
 
 def test_encrypt_decrypt_roundtrip():
@@ -41,3 +41,12 @@ def test_encrypt_decrypt_consistency_with_known_values():
     expected_ciphertext = "LXFOPVEFRNHR"
     assert vigenere_encrypt(plaintext, "LEMON") == expected_ciphertext
     assert vigenere_decrypt(expected_ciphertext, "LEMON") == plaintext
+
+
+def test_vigenere_crack():
+    plaintext = "THEVIGENERECIPHERISUSEDTOENCODEPLAINTEXTINTOCIPHERTEXT"
+    key = "ARSE"
+    ciphertext = vigenere_encrypt(plaintext, key)
+    results = vigenere_crack(ciphertext, key_length=[3, 4, 5], n_trials=100, top_n=10)
+    assert results[0] == (key, plaintext)
+    assert len(results) == 10
