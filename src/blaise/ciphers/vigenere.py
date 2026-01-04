@@ -3,7 +3,7 @@ from typing import Iterable
 from blaise.ciphers.caesar import caesar_crack
 from blaise.ciphers.common import rank_results
 from blaise.iterators import product_index_ordered
-from blaise.strings import check_is_alpha
+from blaise.strings import check_is_alpha, normalize_string
 import polars as pl
 
 
@@ -26,8 +26,7 @@ def vigenere_encrypt(plaintext: str, key: str) -> str:
     Parameters
     ----------
     plaintext:
-        The text to encrypt. Non-alphabetic characters are preserved
-        unchanged.
+        The text to encrypt.
     key:
         The encryption key. It must consist only of alphabetic
         characters; the function will raise a ``ValueError`` if this
@@ -40,18 +39,16 @@ def vigenere_encrypt(plaintext: str, key: str) -> str:
         alphabetic character of ``plaintext``.
     """
     key = _to_key(key)
+    plaintext = normalize_string(plaintext)
 
     result = []
     key_len = len(key)
     key_index = 0
 
     for ch in plaintext:
-        if ch.isalpha():
-            shift = ord(key[key_index % key_len]) - ord("A")
-            result.append(_shift(ch, shift))
-            key_index += 1
-        else:
-            result.append(ch)
+        shift = ord(key[key_index % key_len]) - ord('A')
+        result.append(chr(ord("A") + (ord(ch) - ord('A') + shift) % 26))
+        key_index += 1
 
     return "".join(result)
 
@@ -62,8 +59,7 @@ def vigenere_decrypt(ciphertext: str, key: str) -> str:
     Parameters
     ----------
     ciphertext:
-        The text to decrypt. Non-alphabetic characters are preserved
-        unchanged.
+        The text to decrypt.
     key:
         The decryption key. It must consist only of alphabetic
         characters; the function will raise a ``ValueError`` if this
@@ -75,18 +71,16 @@ def vigenere_decrypt(ciphertext: str, key: str) -> str:
         The original plaintext recovered from ``ciphertext``.
     """
     key = _to_key(key)
+    ciphertext = normalize_string(ciphertext)
 
     result = []
     key_len = len(key)
     key_index = 0
 
     for ch in ciphertext:
-        if ch.isalpha():
-            shift = ord(key[key_index % key_len]) - ord("A")
-            result.append(_shift(ch, -shift))
-            key_index += 1
-        else:
-            result.append(ch)
+        shift = ord(key[key_index % key_len]) - ord('A')
+        result.append(chr(ord("A") + (ord(ch) - ord('A') - shift) % 26))
+        key_index += 1
 
     return "".join(result)
 

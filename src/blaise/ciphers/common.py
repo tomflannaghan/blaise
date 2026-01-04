@@ -12,7 +12,8 @@ def bruteforce_crack(
     top_n: int | None = None,
 ) -> pl.DataFrame:
     """
-    A bruteforce attempt to crack a cipher by trying all keys in a list. Returns the top ranked results.
+    A bruteforce attempt to crack a cipher by trying all keys in a list. Returns a dataframe of the
+    top n results (or all of the results if not specified), ordered by score (best first).
     """
     df = pl.from_dict({"key": keys})
     df = df.with_columns(

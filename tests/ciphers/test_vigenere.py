@@ -5,26 +5,25 @@ from blaise.ciphers.vigenere import vigenere_crack, vigenere_encrypt, vigenere_d
 
 def test_encrypt_decrypt_roundtrip():
     """Encryption followed by decryption should return the original text."""
-    plaintext = "HELLO WORLD! 123"
+    plaintext = "HELLOWORLD"
     ciphertext = vigenere_encrypt(plaintext, "KEY")
     assert ciphertext != plaintext  # should be different
     assert vigenere_decrypt(ciphertext, "KEY") == plaintext
 
 
-def test_non_alpha_characters_unchanged():
-    """Non‑alphabetic characters should be preserved unchanged."""
-    plaintext = "123-!@#"
-    assert vigenere_encrypt(plaintext, "ABC") == plaintext
-    assert vigenere_decrypt(plaintext, "ABC") == plaintext
+def test_non_alpha_characters_stripped():
+    """Non‑alphabetic characters should be stripped."""
+    assert vigenere_encrypt("123-!@#", "ABC") == ''
+    assert vigenere_decrypt("123-!@#", "ABC") == ''
 
 
 def test_key_case_insensitivity_and_uppercase_output():
-    """Key should be case‑insensitive and output should preserve case of plaintext."""
+    """Key should be case-insensitive and output should be upper case."""
     plaintext = "AbC"
     ciphertext = vigenere_encrypt(plaintext, "kEy")
     # The key is treated as "KEY", so shifts are 10, 4, 24
-    assert ciphertext == "KfA"
-    assert vigenere_decrypt(ciphertext, "kEy") == plaintext
+    assert ciphertext == "KFA"
+    assert vigenere_decrypt(ciphertext, "kEy") == plaintext.upper()
 
 
 def test_invalid_key_raises():
