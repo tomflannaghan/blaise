@@ -1,3 +1,5 @@
+from typing import Iterable
+from blaise.scores.ngram import ngram_top_n
 from blaise.strings import check_is_alpha
 
 
@@ -20,7 +22,7 @@ def vigenere_encrypt(plaintext: str, key: str) -> str:
     Parameters
     ----------
     plaintext:
-        The text to encrypt. Non‑alphabetic characters are preserved
+        The text to encrypt. Non-alphabetic characters are preserved
         unchanged.
     key:
         The encryption key. It must consist only of alphabetic
@@ -56,7 +58,7 @@ def vigenere_decrypt(ciphertext: str, key: str) -> str:
     Parameters
     ----------
     ciphertext:
-        The text to decrypt. Non‑alphabetic characters are preserved
+        The text to decrypt. Non-alphabetic characters are preserved
         unchanged.
     key:
         The decryption key. It must consist only of alphabetic
@@ -83,3 +85,33 @@ def vigenere_decrypt(ciphertext: str, key: str) -> str:
             result.append(ch)
 
     return "".join(result)
+
+
+def vigenere_crack(
+    ciphertext: str,
+    key_length: int | Iterable[int] = range(1, 10),
+    top_n=10,
+    n_trials: int = 100000,
+    ngram_dist="en_wiki",
+    ngram_n=3,
+) -> list[tuple[str, str]]:
+    """
+    Cracks Vigenere. Returns the top n results in pairs of (key, plaintext).
+    """
+    results = []
+    if isinstance(key_length, Iterable):
+        for key_len in key_length:
+            results += vigenere_crack(
+                ciphertext,
+                key_len,
+                top_n=top_n,
+                ngram_dist=ngram_dist,
+                ngram_n=ngram_n,
+                n_trials=n_trials,
+            )
+    else:
+        raise NotImplementedError()
+
+    return ngram_top_n(
+        results, n=ngram_n, expected=ngram_dist, top_n=top_n, key=lambda x: x[1]
+    )

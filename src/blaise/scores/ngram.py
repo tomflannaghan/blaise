@@ -1,5 +1,6 @@
 from collections import Counter
 import math
+from typing import Callable, Iterable
 
 from blaise.data import load_data, save_data
 
@@ -53,10 +54,21 @@ def ngram_score(text: str, n: int, expected: dict[str, float] | str) -> float:
     return bd_score(expected, calculate_ngrams(text, n))
 
 
+def ngram_top_n(
+    iterable: Iterable,
+    n: int,
+    expected: dict[str, float] | str,
+    top_n: int = 10,
+    key: Callable = lambda x: x,
+) -> list:
+    return sorted(iterable, key=lambda x: ngram_score(key(x), n, expected=expected))[
+        :top_n
+    ]
+
 
 def load_ngram_dist(name: str, n: int) -> dict[str, float]:
-    return load_data('ngram_dist', f'{name}_{n}')
+    return load_data("ngram_dist", f"{name}_{n}")
 
 
 def save_ngram_dist(dist, name: str, n: int, **kwargs):
-    save_data(dist, 'ngram_dist', f'{name}_{n}', **kwargs)
+    save_data(dist, "ngram_dist", f"{name}_{n}", **kwargs)
