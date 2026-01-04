@@ -1,3 +1,4 @@
+from functools import lru_cache
 import glob
 import json
 import os
@@ -10,6 +11,7 @@ USER_DATA_PATH = os.environ.get(
 )
 
 
+@lru_cache(10000)
 def load_data(data_type: str, data_name: str) -> Any:
     """
     Searches the built in and user defined paths for a data item and returns it. The built in path takes precedence.
@@ -42,6 +44,7 @@ def save_data(data: Any, data_type: str, data_name: str, save_to_built_in=False)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
         json.dump(data, f)
+    load_data.cache_clear()
 
 
 def list_data(data_type: str, data_name: str = "*") -> list[str]:

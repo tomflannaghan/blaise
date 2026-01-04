@@ -67,7 +67,6 @@ def ngram_top_n(
     return [x[1] for x in ordered[:top_n]]
 
 
-@lru_cache(10000)
 def load_ngram_dist(name: str, n: int) -> dict[str, float]:
     return load_data("ngram_dist", f"{name}_{n}")
 
