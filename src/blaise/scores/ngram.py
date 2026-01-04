@@ -61,9 +61,9 @@ def ngram_top_n(
     top_n: int = 10,
     key: Callable = lambda x: x,
 ) -> list:
-    return sorted(iterable, key=lambda x: ngram_score(key(x), n, expected=expected))[
-        :top_n
-    ]
+    ordered = sorted(
+        iterable, key=lambda x: ngram_score(key(x), n, expected=expected))
+    return ordered[:top_n]
 
 
 def load_ngram_dist(name: str, n: int) -> dict[str, float]:
