@@ -13,8 +13,8 @@ def test_encrypt_decrypt_roundtrip():
 
 def test_non_alpha_characters_stripped():
     """Non‑alphabetic characters should be stripped."""
-    assert vigenere_encrypt("123-!@#", "ABC") == ''
-    assert vigenere_decrypt("123-!@#", "ABC") == ''
+    assert vigenere_encrypt("123-!@#", "ABC") == ""
+    assert vigenere_decrypt("123-!@#", "ABC") == ""
 
 
 def test_key_case_insensitivity_and_uppercase_output():

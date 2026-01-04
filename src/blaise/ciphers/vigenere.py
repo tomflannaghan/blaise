@@ -46,8 +46,8 @@ def vigenere_encrypt(plaintext: str, key: str) -> str:
     key_index = 0
 
     for ch in plaintext:
-        shift = ord(key[key_index % key_len]) - ord('A')
-        result.append(chr(ord("A") + (ord(ch) - ord('A') + shift) % 26))
+        shift = ord(key[key_index % key_len]) - ord("A")
+        result.append(chr(ord("A") + (ord(ch) - ord("A") + shift) % 26))
         key_index += 1
 
     return "".join(result)
@@ -78,8 +78,8 @@ def vigenere_decrypt(ciphertext: str, key: str) -> str:
     key_index = 0
 
     for ch in ciphertext:
-        shift = ord(key[key_index % key_len]) - ord('A')
-        result.append(chr(ord("A") + (ord(ch) - ord('A') - shift) % 26))
+        shift = ord(key[key_index % key_len]) - ord("A")
+        result.append(chr(ord("A") + (ord(ch) - ord("A") - shift) % 26))
         key_index += 1
 
     return "".join(result)
@@ -96,7 +96,7 @@ def vigenere_crack(
     Cracks Vigenere. Returns the top n results in pairs of (key, plaintext).
     """
     vigenere_results = []
-    if isinstance(key_length, Iterable):
+    if not isinstance(key_length, int):
         for key_len in key_length:
             vigenere_results += vigenere_crack(
                 ciphertext,
