@@ -1,6 +1,8 @@
 from collections import Counter
 import math
 
+from blaise.data import load_data, save_data
+
 
 def calculate_ngrams(text: str, n: int) -> dict[str, float]:
     """
@@ -29,9 +31,14 @@ def calculate_ngrams(text: str, n: int) -> dict[str, float]:
 def bd_score(dist1: dict[str, float], dist2: dict[str, float]) -> float:
     """
     Calculates the Bhattacharyya distance (https://en.wikipedia.org/wiki/Bhattacharyya_distance)
-    of two distributions.
-
+    between two n-gram distributions.
     """
+    if len(dist1) == 0 or len(dist2) == 0:
+        raise ValueError("Cannot calculate BD score on empty distributions")
+    k1 = next(iter(dist1.keys()))
+    k2 = next(iter(dist2.keys()))
+    if len(k1) != len(k2):
+        raise ValueError("Distributions are for different length ngrams")
     return -math.log(
         sum(
             (dist1.get(k, 0) * dist2.get(k, 0)) ** 2
@@ -40,5 +47,16 @@ def bd_score(dist1: dict[str, float], dist2: dict[str, float]) -> float:
     )
 
 
-def ngram_score(text: str, n: int, expected: dict[str, float]) -> float:
+def ngram_score(text: str, n: int, expected: dict[str, float] | str) -> float:
+    if isinstance(expected, str):
+        expected = load_ngram_dist(expected, n)
     return bd_score(expected, calculate_ngrams(text, n))
+
+
+
+def load_ngram_dist(name: str, n: int) -> dict[str, float]:
+    return load_data('ngram_dist', f'{name}_{n}')
+
+
+def save_ngram_dist(dist, name: str, n: int, **kwargs):
+    save_data(dist, 'ngram_dist', f'{name}_{n}', **kwargs)
