@@ -1,9 +1,10 @@
 from itertools import zip_longest
 from typing import Iterable
 from blaise.ciphers.caesar import caesar_crack
+from blaise.ciphers.common import rank_results
 from blaise.iterators import product_index_ordered
-from blaise.scores.ngram import ngram_top_n
 from blaise.strings import check_is_alpha
+import polars as pl
 
 
 def _shift(char: str, shift: int) -> str:
@@ -95,9 +96,8 @@ def vigenere_crack(
     key_length: int | Iterable[int] = range(3, 8),
     top_n=10,
     n_trials: int = 1000,
-    ngram_dist="en_wiki",
-    ngram_n=2,
-) -> list[tuple[str, str]]:
+    scorer=None,
+) -> pl.DataFrame:
     """
     Cracks Vigenere. Returns the top n results in pairs of (key, plaintext).
     """
@@ -108,32 +108,24 @@ def vigenere_crack(
                 ciphertext,
                 key_len,
                 top_n=top_n,
-                ngram_dist=ngram_dist,
-                ngram_n=ngram_n,
+                scorer=scorer,
                 n_trials=n_trials,
-            )
+            ).to_dicts()
     else:
         caesar_results = []
         for i in range(key_length):
             subsec = ciphertext[i::key_length]
             # Note ngram here is 1 because the sections are not contiguous - only letter freqs are usable.
-            caesar_results.append(
-                caesar_crack(subsec, ngram_n=1, ngram_dist=ngram_dist, is_norm=True)
-            )
+            caesar_results.append(caesar_crack(subsec, scorer=scorer).to_dicts())
 
         for combo in product_index_ordered(*caesar_results):
             plaintext = "".join(
-                sum(zip_longest(*[res[1] for res in combo], fillvalue=""), ())
+                sum(zip_longest(*[res["plaintext"] for res in combo], fillvalue=""), ())
             )
-            key = "".join(chr(ord("A") + res[0]) for res in combo)
-            vigenere_results.append((key, plaintext))
+            key = "".join(chr(ord("A") + res["key"]) for res in combo)
+            vigenere_results.append({"key": key, "plaintext": plaintext})
             if len(vigenere_results) > n_trials:
                 break
 
-    return ngram_top_n(
-        vigenere_results,
-        n=ngram_n,
-        expected=ngram_dist,
-        top_n=top_n,
-        key=lambda x: x[1],
-    )
+    df = pl.from_dicts(vigenere_results)
+    return rank_results(df, scorer=scorer, top_n=top_n)

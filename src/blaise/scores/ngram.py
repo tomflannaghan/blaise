@@ -1,8 +1,8 @@
 from collections import Counter
 import math
-from typing import Callable, Iterable
 
 from blaise.data import load_data, save_data
+from blaise.scores.base import Scorer
 
 
 def calculate_ngrams(text: str, n: int) -> dict[str, float]:
@@ -48,27 +48,25 @@ def bd_score(dist1: dict[str, float], dist2: dict[str, float]) -> float:
     )
 
 
-def ngram_score(text: str, n: int, expected: dict[str, float] | str) -> float:
-    if isinstance(expected, str):
-        expected = load_ngram_dist(expected, n)
-    return bd_score(expected, calculate_ngrams(text, n))
-
-
-def ngram_top_n(
-    iterable: Iterable,
-    n: int,
-    expected: dict[str, float] | str,
-    top_n: int = 10,
-    key: Callable = lambda x: x,
-) -> list:
-    with_sort_key = [(ngram_score(key(v), n, expected=expected), v) for v in iterable]
-    ordered = sorted(with_sort_key, key=lambda x: x[0])
-    return [x[1] for x in ordered[:top_n]]
-
-
 def load_ngram_dist(name: str, n: int) -> dict[str, float]:
     return load_data("ngram_dist", f"{name}_{n}")
 
 
 def save_ngram_dist(dist, name: str, n: int, **kwargs):
     save_data(dist, "ngram_dist", f"{name}_{n}", **kwargs)
+
+
+class NGramScorer(Scorer):
+    """
+    Scores N-Grams using the Bhattacharyya distance
+    """
+
+    def __init__(self, n: int, expected: dict[str, float] | str) -> None:
+        super().__init__()
+        if isinstance(expected, str):
+            expected = load_ngram_dist(expected, n)
+        self.expected_dist = expected
+        self.n = n
+
+    def score(self, text: str) -> float:
+        return bd_score(self.expected_dist, calculate_ngrams(text, self.n))

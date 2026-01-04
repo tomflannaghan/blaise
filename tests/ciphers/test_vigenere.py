@@ -48,5 +48,9 @@ def test_vigenere_crack():
     key = "ARSE"
     ciphertext = vigenere_encrypt(plaintext, key)
     results = vigenere_crack(ciphertext, key_length=[3, 4, 5], n_trials=100, top_n=10)
-    assert results[0] == (key, plaintext)
+    assert results[0].to_dicts()[0] == {
+        "key": "ARSE",
+        "plaintext": plaintext,
+        "score": 0.7612071669180257,
+    }
     assert len(results) == 10
