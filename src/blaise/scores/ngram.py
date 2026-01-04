@@ -43,7 +43,7 @@ def bd_score(dist1: dict[str, float], dist2: dict[str, float]) -> float:
         raise ValueError("Distributions are for different length ngrams")
     return -math.log(
         sum(
-            (dist1.get(k, 0) * dist2.get(k, 0)) ** 2
+            (dist1.get(k, 0) * dist2.get(k, 0)) ** 0.5
             for k in dist1.keys() | dist2.keys()
         )
     )

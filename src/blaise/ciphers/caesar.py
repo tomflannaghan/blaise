@@ -22,7 +22,7 @@ def caesar_decrypt(ciphertext: str, key: int, is_norm=False) -> str:
 def caesar_crack(
     ciphertext,
     ngram_dist="en_wiki",
-    ngram_n=3,
+    ngram_n=2,
     is_norm=False,
     top_n=26,
 ) -> list[tuple[int, str]]:
