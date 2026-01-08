@@ -7,14 +7,6 @@ from blaise.strings import check_is_alpha, normalize_string
 import polars as pl
 
 
-def _shift(char: str, shift: int) -> str:
-    if char.isupper():
-        base = ord("A")
-    else:
-        base = ord("a")
-    return chr((ord(char) - base + shift) % 26 + base)
-
-
 def _to_key(k: str) -> str:
     check_is_alpha(k)
     return k.upper()
@@ -142,14 +134,14 @@ def vigenere_crack(
     interleaved subsequences and cracking each subsequence with a
     Caesar-cipher cracker.  The resulting candidate keys are then
     combined using a Cartesian product to form full Vigenère keys
-    in order of likelihood based on frequency analysis of each 
-    interleaved Caesar shift. The search is truncated after 
+    in order of likelihood based on frequency analysis of each
+    interleaved Caesar shift. The search is truncated after
     ``n_trials`` combinations to keep runtime reasonable for long keys.
 
     Examples
     --------
 
-    Here is an example with a relatively short ciphertext. Note that 
+    Here is an example with a relatively short ciphertext. Note that
     the correct decrypt is not the top result because the ciphertext
     is too short for very accurate decryption.
 

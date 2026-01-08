@@ -9,6 +9,7 @@ Welcome to blaise's documentation!
 
    caesar
    vigenere
+   playfair
 
 Indices and tables
 ==================
