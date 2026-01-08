@@ -15,7 +15,7 @@ def calculate_ngrams(text: str, n: int) -> dict[str, float]:
     its relative frequency (count divided by the total number of
     n-grams).
 
-    >>> calculate_ngrams("ABCABC")
+    >>> calculate_ngrams("ABCABC", 3)
     {'ABC': 0.5, 'BCA': 0.25, 'CAB': 0.25}
     """
     if n <= 0:

@@ -37,6 +37,12 @@ def vigenere_encrypt(plaintext: str, key: str) -> str:
     str
         The ciphertext produced by applying the Vigenère shift to each
         alphabetic character of ``plaintext``.
+
+    Examples
+    --------
+
+    >>> vigenere_encrypt("HELLO", "FOO")
+    'MSZQC'
     """
     key = _to_key(key)
     plaintext = normalize_string(plaintext)
@@ -69,6 +75,12 @@ def vigenere_decrypt(ciphertext: str, key: str) -> str:
     -------
     str
         The original plaintext recovered from ``ciphertext``.
+
+    Examples
+    --------
+
+    >>> vigenere_decrypt("MSZQC", "FOO")
+    'HELLO'
     """
     key = _to_key(key)
     ciphertext = normalize_string(ciphertext)
