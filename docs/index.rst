@@ -4,11 +4,11 @@ Welcome to blaise's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: Ciphers:
 
-   usage
-   api
+   caesar
+   vigenere
 
 Indices and tables
 ==================

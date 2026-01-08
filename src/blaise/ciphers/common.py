@@ -22,10 +22,10 @@ def bruteforce_crack(
             return_dtype=pl.String,
         )
     )
-    return rank_results(df, scorer=scorer, top_n=top_n)
+    return _rank_results(df, scorer=scorer, top_n=top_n)
 
 
-def rank_results(
+def _rank_results(
     df: pl.DataFrame, scorer: Scorer | None = None, top_n: int | None = None
 ):
     scorer = as_scorer(scorer)

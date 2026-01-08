@@ -28,6 +28,31 @@ def caesar_crack(
 ) -> pl.DataFrame:
     """
     Cracks a Caesar shift cipher. It will try all shifts and score them with an ngram scorer.
+
+    Parameters
+    ----------
+    ciphertext : str
+        The ciphertext to crack.
+    scorer : optional
+        Scorer function to evaluate plaintext candidates.
+    top_n : optional
+        Number of top results to return.
+
+    Example
+    -------
+
+    >>> caesar_crack('EBIILTLOIA', top_n=3)
+    shape: (3, 3)
+    ┌─────┬────────────┬──────────┐
+    │ key ┆ plaintext  ┆ score    │
+    │ --- ┆ ---        ┆ ---      │
+    │ i64 ┆ str        ┆ f64      │
+    ╞═════╪════════════╪══════════╡
+    │ 23  ┆ HELLOWORLD ┆ 1.545213 │
+    │ 8   ┆ WTAADLDGAS ┆ 1.9751   │
+    │ 19  ┆ LIPPSASVPH ┆ 2.030679 │
+    └─────┴────────────┴──────────┘
+
     """
     return bruteforce_crack(
         ciphertext=ciphertext,
