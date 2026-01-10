@@ -1,6 +1,6 @@
 import time
-from blaise.scores.ngram import calculate_ngrams
-from blaise._blaise import calculate_ngrams as rust_calculate_ngrams  # ty: ignore[unresolved-import]
+from blaise.scores.ngram import NGramScorer, load_ngram_dist
+from blaise._blaise import bh_score_many  # ty: ignore[unresolved-import]
 from blaise.strings import normalize_string
 
 
@@ -14,15 +14,21 @@ sunt in culpa qui officia deserunt mollit anim id est laborum."""
 
 
 def main():
-    text = normalize_string(SAMPLE)
+    texts = [normalize_string(SAMPLE)] * 1000
+    dist = load_ngram_dist("en_wiki", 3)
+    s = NGramScorer(3, expected=dist)
     start = time.time()
-    for _ in range(10000):
-        calculate_ngrams(text, 3)
+    for t in texts:
+        s.score(t)
     print(time.time() - start)
 
     start = time.time()
-    for _ in range(10000):
-        rust_calculate_ngrams(text, 3)
+    bh_score_many(texts, 3, dist)
+    print(time.time() - start)
+
+    start = time.time()
+    for t in texts:
+        bh_score_many([t], 3, dist)
     print(time.time() - start)
 
 
