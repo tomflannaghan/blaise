@@ -43,7 +43,7 @@ def bd_score(dist1: dict[str, float], dist2: dict[str, float]) -> float:
     return -math.log(
         sum(
             (dist1.get(k, 0) * dist2.get(k, 0)) ** 0.5
-            for k in dist1.keys() | dist2.keys()
+            for k in dist1.keys() & dist2.keys()
         )
     )
 
