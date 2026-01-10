@@ -12,15 +12,22 @@ dependencies = [
 ]
 
 [build-system]
-requires = ["uv_build>=0.9.17,<0.10.0"]
-build-backend = "uv_build"
+requires = ["maturin>=1.11,<2.0"]
+build-backend = "maturin"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 
+[tool.uv]
+cache-keys = [{file = "pyproject.toml"}, {file = "rust/Cargo.toml"}, {file = "**/*.rs"}]
+
+[tool.maturin]
+module-name = "blaise._blaise"
+
 [dependency-groups]
 dev = [
     "autodoc>=0.5.0",
+    "maturin>=1.11.5",
     "pytest>=9.0.2",
     "ruff>=0.14.10",
     "sphinx>=6",
