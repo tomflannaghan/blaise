@@ -1,6 +1,5 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
-use pyo3::types::PyDict;
 use std::collections::HashMap;
 use std::f64::INFINITY;
 
@@ -28,22 +27,21 @@ fn bd_score(text: &str, n: usize, dist: &Dist) -> f64 {
 
 #[pyclass]
 struct Dist {
-    dist: HashMap<String, f64>
+    dist: HashMap<String, f64>,
 }
 
 #[pyfunction]
 fn to_dist(dist: HashMap<String, f64>) -> PyResult<Dist> {
-    Ok(Dist {dist: dist})
+    Ok(Dist { dist: dist })
 }
 
-
 #[pyfunction]
-fn calculate_ngrams(py: Python, text: &str, n: usize) -> PyResult<PyObject> {
+fn calculate_ngrams(text: &str, n: usize) -> PyResult<HashMap<String, f64>> {
     if n == 0 {
         return Err(PyValueError::new_err("n must be >= 1"));
     }
     if text.len() < n {
-        return Ok(PyDict::new(py).into());
+        return Ok(HashMap::new());
     }
     let mut counts: HashMap<String, usize> = HashMap::new();
     for i in 0..=(text.len() - n) {
@@ -51,11 +49,12 @@ fn calculate_ngrams(py: Python, text: &str, n: usize) -> PyResult<PyObject> {
         *counts.entry(ngram.to_string()).or_insert(0) += 1;
     }
     let total: usize = counts.values().sum();
-    let dict = PyDict::new(py);
-    for (ngram, count) in counts {
-        dict.set_item(ngram, count as f64 / total as f64)?;
-    }
-    Ok(dict.into())
+    Ok(counts
+        .iter()
+        .map(|(k, v)| {
+            return (k.clone(), (*v as f64) / (total as f64));
+        })
+        .collect())
 }
 
 /// A Python module implemented in Rust. The name of this function must match
