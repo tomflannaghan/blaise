@@ -4,8 +4,7 @@ import json
 import os
 from typing import Any
 
-PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
-BUILT_IN_DATA_PATH = os.path.join(PACKAGE_ROOT, "data")
+BUILT_IN_DATA_PATH = os.path.abspath(os.path.dirname(__file__))
 USER_DATA_PATH = os.environ.get(
     "BLAISE_DATA_PATH", os.path.join(os.path.expanduser("~"), ".blaise", "data")
 )

@@ -51,7 +51,7 @@ def test_vigenere_crack():
         {
             "key": "ARSE",
             "plaintext": plaintext,
-            "score": 0.7612071669180257,
+            "score": 0.7564019713320772,
         }
     )
     assert len(results) == 10

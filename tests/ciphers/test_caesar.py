@@ -1,3 +1,4 @@
+import pytest
 from blaise.ciphers.caesar import caesar_crack, caesar_encrypt, caesar_decrypt
 
 
@@ -117,8 +118,10 @@ def test_crack():
     assert ciphertext == "QEBNRFZHYOLTKCLUGRJMPLSBOQEBIXWVALD"
     result = caesar_crack(ciphertext)
     assert len(result) == 26
-    assert result[0].to_dicts()[0] == {
-        "key": 23,
-        "plaintext": plaintext,
-        "score": 1.1899374005521646,
-    }
+    assert result[0].to_dicts()[0] == pytest.approx(
+        {
+            "key": 23,
+            "plaintext": plaintext,
+            "score": 1.1898997492680905,
+        }
+    )

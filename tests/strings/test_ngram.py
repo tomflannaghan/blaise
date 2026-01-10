@@ -1,6 +1,6 @@
 import pytest
 
-from blaise.scores.ngram import calculate_ngrams
+from blaise.strings.ngram import calculate_ngrams
 
 
 def test_calculate_ngrams_basic() -> None:

@@ -156,9 +156,9 @@ def vigenere_crack(
     │ --- ┆ ---               ┆ ---      │
     │ str ┆ str               ┆ f64      │
     ╞═════╪═══════════════════╪══════════╡
-    │ OAY ┆ PLERMGARENICETHAV ┆ 1.146352 │
-    │ KEY ┆ THEVIGENERECIPHER ┆ 1.161679 │
-    │ OEY ┆ PHERIGANENECEPHAR ┆ 1.162718 │
+    │ OAY ┆ PLERMGARENICETHAV ┆ 1.135415 │
+    │ KEY ┆ THEVIGENERECIPHER ┆ 1.157981 │
+    │ OEY ┆ PHERIGANENECEPHAR ┆ 1.158325 │
     └─────┴───────────────────┴──────────┘
     """
     vigenere_results = []
