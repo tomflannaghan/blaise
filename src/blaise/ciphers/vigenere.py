@@ -3,6 +3,7 @@ from typing import Iterable
 from blaise.ciphers.caesar import caesar_crack
 from blaise.ciphers.common import _rank_results
 from blaise.iterators import product_index_ordered
+from blaise.scores.ngram import NGramScorer
 from blaise.strings import check_is_alpha, normalize_string
 import polars as pl
 
@@ -95,6 +96,7 @@ def vigenere_crack(
     top_n=10,
     n_trials: int = 1000,
     scorer=None,
+    dist="en_wiki",
 ) -> pl.DataFrame:
     """
     Cracks a Vigenère cipher.
@@ -119,6 +121,7 @@ def vigenere_crack(
     scorer : Scorer, optional
         The scorer to use for assessing the quality of the output
         plaintext.
+    dist: The frequency distribution to use for scoring the Caesar step.
 
     Returns
     -------
@@ -167,13 +170,16 @@ def vigenere_crack(
                 top_n=top_n,
                 scorer=scorer,
                 n_trials=n_trials,
+                dist=dist,
             ).to_dicts()
     else:
         caesar_results = []
         for i in range(key_length):
             subsec = ciphertext[i::key_length]
             # Note ngram here is 1 because the sections are not contiguous - only letter freqs are usable.
-            caesar_results.append(caesar_crack(subsec, scorer=scorer).to_dicts())
+            caesar_results.append(
+                caesar_crack(subsec, scorer=NGramScorer(n=1, expected=dist)).to_dicts()
+            )
 
         for combo in product_index_ordered(*caesar_results):
             plaintext = "".join(
