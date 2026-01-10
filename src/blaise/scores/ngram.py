@@ -3,6 +3,7 @@ import math
 
 from blaise.data import load_data, save_data
 from blaise.scores.base import Scorer
+from blaise import _blaise  # ty: ignore[unresolved-import]
 
 
 def calculate_ngrams(text: str, n: int) -> dict[str, float]:
@@ -56,9 +57,9 @@ def save_ngram_dist(dist, name: str, n: int, **kwargs):
     save_data(dist, "ngram_dist", f"{name}_{n}", **kwargs)
 
 
-class NGramScorer(Scorer):
+class _PyNGramScorer(Scorer):
     """
-    Scores N-Grams using the Bhattacharyya distance
+    Scores N-Grams using the Bhattacharyya distance - reference python impl.
     """
 
     def __init__(self, n: int, expected: dict[str, float] | str) -> None:
@@ -70,3 +71,20 @@ class NGramScorer(Scorer):
 
     def score(self, text: str) -> float:
         return bd_score(self.expected_dist, calculate_ngrams(text, self.n))
+
+
+class NGramScorer(Scorer):
+    """
+    Scores N-Grams using the Bhattacharyya distance
+    """
+
+    def __init__(self, n: int, expected: dict[str, float] | str) -> None:
+        super().__init__()
+        if isinstance(expected, str):
+            expected = load_ngram_dist(expected, n)
+        self.expected_dist = expected
+        self._rs_dist = _blaise.to_dist(self.expected_dist)
+        self.n = n
+
+    def score(self, text: str) -> float:
+        return _blaise.bd_score(text, self.n, self._rs_dist)

@@ -1,6 +1,5 @@
 import time
-from blaise.scores.ngram import NGramScorer, load_ngram_dist
-from blaise._blaise import bh_score_many  # ty: ignore[unresolved-import]
+from blaise.scores.ngram import NGramScorer, _PyNGramScorer
 from blaise.strings import normalize_string
 
 
@@ -15,21 +14,17 @@ sunt in culpa qui officia deserunt mollit anim id est laborum."""
 
 def main():
     texts = [normalize_string(SAMPLE)] * 1000
-    dist = load_ngram_dist("en_wiki", 3)
-    s = NGramScorer(3, expected=dist)
+    rs_s = NGramScorer(3, "en_wiki")
+    py_s = _PyNGramScorer(3, "en_wiki")
     start = time.time()
     for t in texts:
-        s.score(t)
-    print(time.time() - start)
-
-    start = time.time()
-    bh_score_many(texts, 3, dist)
-    print(time.time() - start)
+        res = py_s.score(t)
+    print("Python:", time.time() - start, res)
 
     start = time.time()
     for t in texts:
-        bh_score_many([t], 3, dist)
-    print(time.time() - start)
+        res = rs_s.score(t)
+    print("Rust:", time.time() - start, res)
 
 
 if __name__ == "__main__":
