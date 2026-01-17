@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.12"
 dependencies = [
     "polars>=1.36.1",
+    "pygtrie>=2.5.0",
 ]
 
 [build-system]
