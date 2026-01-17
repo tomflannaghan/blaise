@@ -28,10 +28,12 @@ def _generate_from_corpus(name, overwrite=False):
         print("No corp")
     print(f"Calculating word distribution from corpus {name}")
     dist = dict(Counter(normalize_string(word) for word in corpus.split()))
+    # Some substrings are entirely non-alpha characters so remove these.
     if "" in dist:
-        dist.pop(
-            ""
-        )  # Some substrings are entirely non-alpha characters so remove these.
+        dist.pop("")
+    # Normalise word distribution
+    total = sum(dist.values())
+    dist = {w: n / total for w, n in dist.items()}
     save_word_dist(dist, name)
     print("Saved word distribution")
     return dist
