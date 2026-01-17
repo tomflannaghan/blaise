@@ -9,6 +9,7 @@ class Segmenter:
         self,
         word_dist: str | list[str] | dict[str, float],
         n_branch_limit: int | None = None,
+        length_power: float = 1,
     ):
         """
         Initializes a :class:`Segmenter` instance.
@@ -27,6 +28,11 @@ class Segmenter:
             When set, limits the number of candidate segmentations kept at
             each recursion step to the top ``n_branch_limit`` by score.
             If ``None`` (the default), all candidates are considered.
+        length_power: float
+            This controls how much we favour long words over short words.
+            A value of 1 means we are agnostic to length - the score is directly
+            proportional to the length of the word. A value of greater than
+            one means we prefer longer words over shorter words.
 
         Notes
         -----
@@ -64,6 +70,19 @@ class Segmenter:
         │ HELLO WORLD  ┆ 10.397208 │
         │ HELL O WORLD ┆ 16.364956 │
         └──────────────┴───────────┘
+
+        We can also pass in a length power to make the algorithm favour longer words:
+
+        >>> Segmenter(['HELLO', 'WORLD', 'HELL', 'O'], length_power=2).segment('HELLOWORLD')
+        shape: (2, 2)
+        ┌──────────────┬──────────┐
+        │ text         ┆ score    │
+        │ ---          ┆ ---      │
+        │ str          ┆ f64      │
+        ╞══════════════╪══════════╡
+        │ HELLO WORLD  ┆ 6.199697 │
+        │ HELL O WORLD ┆ 7.258732 │
+        └──────────────┴──────────┘
         """
         if isinstance(word_dist, str):
             word_dist = load_word_dist(word_dist)
@@ -78,6 +97,7 @@ class Segmenter:
 
         self.word_dist = word_dist
         self.n_branch_limit = n_branch_limit
+        self.length_power = length_power
         self._trie = CharTrie(self.word_dist)
 
     def segment(self, text: str) -> pl.DataFrame:
@@ -106,7 +126,8 @@ class Segmenter:
                         text=pl.concat_str(
                             [pl.lit(word), pl.col("text")], separator=" "
                         ),
-                        score=pl.col("score") - len(word) * math.log(p),
+                        score=pl.col("score")
+                        - len(word) ** (1 / self.length_power) * math.log(p),
                     )
                     results.append(sub_result)
 
