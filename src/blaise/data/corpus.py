@@ -8,15 +8,25 @@ from blaise.data.core import load_data, save_data
 _DATA_TYPE = "corpus"
 
 
-def load_corpus(name) -> str:
+def load_corpus(name, overwrite=False) -> str:
+    result = None
     try:
-        return load_data(_DATA_TYPE, name)
+        if not overwrite:
+            result = load_data(_DATA_TYPE, name)
     except FileNotFoundError:
-        if name in _KNOWN_NAMES:
-            data = _KNOWN_NAMES[name]()
-            save_data(data, _DATA_TYPE, "en_wiki")
-            return data
-        raise
+        result = None
+    if result is None:
+        result = _generate_known_corpus(name)
+    if result is None:
+        raise FileNotFoundError(f"No corpus named {name}")
+    return result
+
+
+def _generate_known_corpus(name) -> str | None:
+    if name in _KNOWN_NAMES:
+        data = _KNOWN_NAMES[name]()
+        save_data(data, _DATA_TYPE, "en_wiki")
+        return data
 
 
 def save_corpus(data: str, name: str):
