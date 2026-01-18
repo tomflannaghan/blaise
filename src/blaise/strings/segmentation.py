@@ -7,84 +7,80 @@ from blaise.data.worddist import load_word_dist
 
 
 class Segmenter:
+    """
+    A string segmenter that identifies word boundaries in a string of letters.
+
+    Parameters
+    ----------
+    word_dist : str | list[str] | dict[str, float]
+        The source of word probabilities used for segmentation.
+        * If a string, it is interpreted as a word dist name and loaded via
+            :func:`load_word_dist`.
+        * If a list of strings, each word is assigned an equal probability
+            (i.e., a uniform distribution).
+        * If a dictionary mapping words to probabilities, the values are
+            normalised so that the total probability sums to 1.
+    n_branch_limit : int | None, optional
+        When set, limits the number of candidate segmentations kept at
+        each recursion step to the top ``n_branch_limit`` by score.
+        If ``None`` (the default), all candidates are considered.
+    length_power: float
+        This controls how much we favour long words over short words.
+        A value of 1 means we are agnostic to length. A value of greater than
+        one means we prefer longer words over shorter words.
+
+    Examples
+    --------
+
+    If passed a list, words get equal probability:
+
+    >>> Segmenter(['HELLO', 'WORLD', 'HELL', 'O']).segment('HELLOWORLD')
+    shape: (2, 2)
+    ┌──────────────┬───────────┐
+    │ text         ┆ score     │
+    │ ---          ┆ ---       │
+    │ str          ┆ f64       │
+    ╞══════════════╪═══════════╡
+    │ HELL O WORLD ┆ 13.862944 │
+    │ HELLO WORLD  ┆ 13.862944 │
+    └──────────────┴───────────┘
+
+    If passed a dict, it uses the weights in the dict as probabilities.
+    Results are returned with most likely first:
+
+    >>> Segmenter({'HELLO': 0.5, 'WORLD': 0.25, 'HELL': 0.2, 'O': 0.05}).segment('HELLOWORLD')
+    shape: (2, 2)
+    ┌──────────────┬───────────┐
+    │ text         ┆ score     │
+    │ ---          ┆ ---       │
+    │ str          ┆ f64       │
+    ╞══════════════╪═══════════╡
+    │ HELLO WORLD  ┆ 10.397208 │
+    │ HELL O WORLD ┆ 16.364956 │
+    └──────────────┴───────────┘
+
+    We can also pass in a length power to make the algorithm favour longer words:
+
+    >>> Segmenter(['HELLO', 'WORLD', 'HELL', 'O'], length_power=2).segment('HELLOWORLD')
+    shape: (2, 2)
+    ┌──────────────┬──────────┐
+    │ text         ┆ score    │
+    │ ---          ┆ ---      │
+    │ str          ┆ f64      │
+    ╞══════════════╪══════════╡
+    │ HELLO WORLD  ┆ 6.199697 │
+    │ HELL O WORLD ┆ 7.258732 │
+    └──────────────┴──────────┘
+    """
+
+
+
     def __init__(
         self,
         word_dist: str | list[str] | dict[str, float] = "en_wiki",
         n_branch_limit: int | None = None,
         length_power: float = 1,
     ):
-        """
-        Initializes a :class:`Segmenter` instance.
-
-        Parameters
-        ----------
-        word_dist : str | list[str] | dict[str, float]
-            The source of word probabilities used for segmentation.
-            * If a string, it is interpreted as a word dist name and loaded via
-              :func:`load_word_dist`.
-            * If a list of strings, each word is assigned an equal probability
-              (i.e., a uniform distribution).
-            * If a dictionary mapping words to probabilities, the values are
-              normalised so that the total probability sums to 1.
-        n_branch_limit : int | None, optional
-            When set, limits the number of candidate segmentations kept at
-            each recursion step to the top ``n_branch_limit`` by score.
-            If ``None`` (the default), all candidates are considered.
-        length_power: float
-            This controls how much we favour long words over short words.
-            A value of 1 means we are agnostic to length. A value of greater than
-            one means we prefer longer words over shorter words.
-
-        Notes
-        -----
-        The constructor builds a character trie (:class:`pygtrie.CharTrie`) from
-        the supplied word distribution to enable efficient prefix checks during
-        segmentation.  The trie is stored in ``self._trie`` and the normalised
-        distribution in ``self.word_dist``.
-
-        Examples
-        --------
-
-        If passed a list, words get equal probability:
-
-        >>> Segmenter(['HELLO', 'WORLD', 'HELL', 'O']).segment('HELLOWORLD')
-        shape: (2, 2)
-        ┌──────────────┬───────────┐
-        │ text         ┆ score     │
-        │ ---          ┆ ---       │
-        │ str          ┆ f64       │
-        ╞══════════════╪═══════════╡
-        │ HELL O WORLD ┆ 13.862944 │
-        │ HELLO WORLD  ┆ 13.862944 │
-        └──────────────┴───────────┘
-
-        If passed a dict, it uses the weights in the dict as probabilities.
-        Results are returned with most likely first:
-
-        >>> Segmenter({'HELLO': 0.5, 'WORLD': 0.25, 'HELL': 0.2, 'O': 0.05}).segment('HELLOWORLD')
-        shape: (2, 2)
-        ┌──────────────┬───────────┐
-        │ text         ┆ score     │
-        │ ---          ┆ ---       │
-        │ str          ┆ f64       │
-        ╞══════════════╪═══════════╡
-        │ HELLO WORLD  ┆ 10.397208 │
-        │ HELL O WORLD ┆ 16.364956 │
-        └──────────────┴───────────┘
-
-        We can also pass in a length power to make the algorithm favour longer words:
-
-        >>> Segmenter(['HELLO', 'WORLD', 'HELL', 'O'], length_power=2).segment('HELLOWORLD')
-        shape: (2, 2)
-        ┌──────────────┬──────────┐
-        │ text         ┆ score    │
-        │ ---          ┆ ---      │
-        │ str          ┆ f64      │
-        ╞══════════════╪══════════╡
-        │ HELLO WORLD  ┆ 6.199697 │
-        │ HELL O WORLD ┆ 7.258732 │
-        └──────────────┴──────────┘
-        """
         if isinstance(word_dist, str):
             word_dist = load_word_dist(word_dist)
 

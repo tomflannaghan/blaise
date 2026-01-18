@@ -4,12 +4,14 @@ Welcome to blaise's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Ciphers:
+   :maxdepth: 2
+   :caption: Contents:
 
-   caesar
-   vigenere
-   playfair
+   ciphers
+
+   strings
+   
+   scores
 
 Indices and tables
 ==================
