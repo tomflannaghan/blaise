@@ -19,6 +19,20 @@ build-backend = "maturin"
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    # Pyflakes
+    "F",
+    # Pycodestyle
+    "E",
+    "W",
+    # isort
+    "I001"
+]
+
 [tool.uv]
 cache-keys = [{file = "pyproject.toml"}, {file = "rust/Cargo.toml"}, {file = "**/*.rs"}]
 

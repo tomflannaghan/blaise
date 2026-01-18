@@ -1,8 +1,8 @@
-from blaise.data.ngram import load_ngram_dist
 import math
 
-from blaise.scores.base import Scorer
 from blaise import _blaise  # ty: ignore[unresolved-import]
+from blaise.data.ngram import load_ngram_dist
+from blaise.scores.base import Scorer
 from blaise.strings.ngram import calculate_ngrams
 
 
@@ -17,12 +17,7 @@ def bd_score(dist1: dict[str, float], dist2: dict[str, float]) -> float:
     k2 = next(iter(dist2.keys()))
     if len(k1) != len(k2):
         raise ValueError("Distributions are for different length ngrams")
-    return -math.log(
-        sum(
-            (dist1.get(k, 0) * dist2.get(k, 0)) ** 0.5
-            for k in dist1.keys() & dist2.keys()
-        )
-    )
+    return -math.log(sum((dist1.get(k, 0) * dist2.get(k, 0)) ** 0.5 for k in dist1.keys() & dist2.keys()))
 
 
 class _PyNGramScorer(Scorer):

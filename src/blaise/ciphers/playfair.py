@@ -3,13 +3,13 @@ from blaise.strings import check_is_alpha, normalize_string
 
 
 class Playfair(Cipher):
+    """
+    Wikipedia page: https://en.wikipedia.org/wiki/Playfair_cipher.
+    """
+
     def __init__(self, fill_char="X", alt_fill_char="Q", missing_letter: str = "J->I"):
-        self._missing_letter, self._missing_letter_replacement = missing_letter.split(
-            "->"
-        )
-        self._alphabet = [
-            c for c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" if c != self._missing_letter
-        ]
+        self._missing_letter, self._missing_letter_replacement = missing_letter.split("->")
+        self._alphabet = [c for c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" if c != self._missing_letter]
         self._fill_char = fill_char
         self._alt_fill_char = alt_fill_char
 
@@ -21,13 +21,9 @@ class Playfair(Cipher):
         'BMODZBXDNABEKUDMUIXMMOUVIF'
         """
         key = _to_key(key, self._alphabet)
-        plaintext = normalize_string(plaintext).replace(
-            self._missing_letter, self._missing_letter_replacement
-        )
+        plaintext = normalize_string(plaintext).replace(self._missing_letter, self._missing_letter_replacement)
         return _playfair_encrypt(
-            _to_bigrams(
-                plaintext, fill_char=self._fill_char, alt_fill_char=self._alt_fill_char
-            ),
+            _to_bigrams(plaintext, fill_char=self._fill_char, alt_fill_char=self._alt_fill_char),
             key,
         )
 
@@ -56,9 +52,7 @@ class Playfair(Cipher):
         # Reverse the key - it's equivalent to decrypting
         plaintext = _playfair_encrypt(zip(ciphertext[::2], ciphertext[1::2]), key[::-1])
         if remove_fill:
-            plaintext = _remove_fill(
-                plaintext, fill_char=self._fill_char, alt_fill_char=self._alt_fill_char
-            )
+            plaintext = _remove_fill(plaintext, fill_char=self._fill_char, alt_fill_char=self._alt_fill_char)
 
         return plaintext
 
@@ -108,9 +102,7 @@ def _exchange_xy(x1, y1, x2, y2):
         return x2, y1, x1, y2
 
 
-def _to_bigrams(
-    string: str, fill_char: str = "X", alt_fill_char: str = "Q"
-) -> list[tuple[str, str]]:
+def _to_bigrams(string: str, fill_char: str = "X", alt_fill_char: str = "Q") -> list[tuple[str, str]]:
     """
     Converts string into bigrams. The bigrams cannot be repeated letters. If they are
     we add an additional letter, the fill_char, to the message.

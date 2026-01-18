@@ -1,14 +1,22 @@
 from itertools import zip_longest
 from typing import Iterable
-from blaise.ciphers.caesar import Caesar
-from blaise.ciphers.common import _rank_results, Cipher
-from blaise.iterators import product_index_ordered
-from blaise.scores.ngram import NGramScorer
-from blaise.strings import check_is_alpha, normalize_string
+
 import polars as pl
+
+from blaise.iterators import product_index_ordered
+from blaise.scores import NGramScorer
+from blaise.strings import check_is_alpha, normalize_string
+
+from . import Caesar
+from .common import Cipher, _rank_results
 
 
 class Vigenere(Cipher):
+    """
+    The Vigenère Cipher is a straightforward cipher formed by interleaving Caesar shifts.
+    Wikipedia page: https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher.
+    """
+
     def encrypt(self, plaintext: str, key: str) -> str:
         """Encrypt ``plaintext`` using the Vigenère cipher.
 
@@ -171,11 +179,7 @@ class Vigenere(Cipher):
             for i in range(key_length):
                 subsec = ciphertext[i::key_length]
                 # Note ngram here is 1 because the sections are not contiguous - only letter freqs are usable.
-                caesar_results.append(
-                    Caesar()
-                    .crack(subsec, scorer=NGramScorer(n=1, expected=dist))
-                    .to_dicts()
-                )
+                caesar_results.append(Caesar().crack(subsec, scorer=NGramScorer(n=1, expected=dist)).to_dicts())
 
             for combo in product_index_ordered(*caesar_results):
                 plaintext = "".join(

@@ -1,4 +1,5 @@
 import pytest
+
 from blaise.ciphers.caesar import Caesar
 
 

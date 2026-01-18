@@ -1,7 +1,9 @@
 import math
-from blaise.data.worddist import load_word_dist
-from pygtrie import CharTrie
+
 import polars as pl
+from pygtrie import CharTrie
+
+from blaise.data.worddist import load_word_dist
 
 
 class Segmenter:
@@ -30,8 +32,7 @@ class Segmenter:
             If ``None`` (the default), all candidates are considered.
         length_power: float
             This controls how much we favour long words over short words.
-            A value of 1 means we are agnostic to length - the score is directly
-            proportional to the length of the word. A value of greater than
+            A value of 1 means we are agnostic to length. A value of greater than
             one means we prefer longer words over shorter words.
 
         Notes
@@ -123,11 +124,8 @@ class Segmenter:
                     p = self._trie[word]
                     sub_result = self._segment_impl(text[i:], cache)
                     sub_result = sub_result.with_columns(
-                        text=pl.concat_str(
-                            [pl.lit(word), pl.col("text")], separator=" "
-                        ),
-                        score=pl.col("score")
-                        - len(word) ** (1 / self.length_power) * math.log(p),
+                        text=pl.concat_str([pl.lit(word), pl.col("text")], separator=" "),
+                        score=pl.col("score") - len(word) ** (1 / self.length_power) * math.log(p),
                     )
                     results.append(sub_result)
 

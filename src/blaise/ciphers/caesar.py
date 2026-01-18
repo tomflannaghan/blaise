@@ -1,19 +1,23 @@
-from blaise.scores.base import Scorer
-from blaise.ciphers.common import Cipher
 import polars as pl
 
+from blaise.ciphers.common import Cipher
+from blaise.scores.base import Scorer
 from blaise.strings import normalize_string
 
 
 class Caesar(Cipher):
+    """
+    The Caesar Cipher is the simplest of ciphers, where each letter is shifted by a
+    fixed amount in either direction.
+    Wikipedia page: https://en.wikipedia.org/wiki/Caesar_cipher
+    """
+
     def encrypt(self, plaintext: str, key: int) -> str:
         """
         Applies a Caesar shift to plaintext. Positive key value is a right shift, negative is a left shift.
         """
         plaintext = normalize_string(plaintext)
-        return "".join(
-            chr(ord("A") + (ord(c) - ord("A") + key) % 26) for c in plaintext
-        )
+        return "".join(chr(ord("A") + (ord(c) - ord("A") + key) % 26) for c in plaintext)
 
     def decrypt(self, ciphertext: str, key: int) -> str:
         """
@@ -23,9 +27,7 @@ class Caesar(Cipher):
         ciphertext = normalize_string(ciphertext)
         return self.encrypt(ciphertext, key=-key)
 
-    def crack(
-        self, ciphertext, scorer: Scorer | None = None, top_n: int | None = None
-    ) -> pl.DataFrame:
+    def crack(self, ciphertext, scorer: Scorer | None = None, top_n: int | None = None) -> pl.DataFrame:
         """
         Cracks a Caesar shift cipher. It will try all shifts and score them with an ngram scorer.
 

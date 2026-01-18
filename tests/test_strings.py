@@ -1,6 +1,6 @@
 import pytest
 
-from blaise.strings import normalize_string, is_alpha, check_is_alpha, restore_string
+from blaise.strings import check_is_alpha, is_alpha, normalize_string, restore_string
 
 
 class TestNormalize:

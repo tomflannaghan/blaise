@@ -1,13 +1,11 @@
-from functools import lru_cache
 import glob
 import json
 import os
+from functools import lru_cache
 from typing import Any
 
 BUILT_IN_DATA_PATH = os.path.abspath(os.path.dirname(__file__))
-USER_DATA_PATH = os.environ.get(
-    "BLAISE_DATA_PATH", os.path.join(os.path.expanduser("~"), ".blaise", "data")
-)
+USER_DATA_PATH = os.environ.get("BLAISE_DATA_PATH", os.path.join(os.path.expanduser("~"), ".blaise", "data"))
 
 
 @lru_cache(10000)
@@ -34,9 +32,7 @@ def save_data(data: Any, data_type: str, data_name: str, save_to_built_in=False)
     if save_to_built_in:
         path = built_in_path
     elif os.path.exists(built_in_path):
-        raise ValueError(
-            f"Cannot overwrite a built in data item {data_type}/{data_name}"
-        )
+        raise ValueError(f"Cannot overwrite a built in data item {data_type}/{data_name}")
     else:
         path = os.path.join(USER_DATA_PATH, data_type, f"{data_name}.json")
 

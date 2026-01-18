@@ -1,8 +1,9 @@
-from abc import abstractmethod, ABC
+from abc import ABC, abstractmethod
 from typing import Any
 
-from blaise.scores.base import Scorer, as_scorer
 import polars as pl
+
+from blaise.scores.base import Scorer, as_scorer
 
 
 class Cipher(ABC):
@@ -35,13 +36,9 @@ class Cipher(ABC):
         return _rank_results(df, scorer=scorer, top_n=top_n)
 
 
-def _rank_results(
-    df: pl.DataFrame, scorer: Scorer | None = None, top_n: int | None = None
-):
+def _rank_results(df: pl.DataFrame, scorer: Scorer | None = None, top_n: int | None = None):
     scorer = as_scorer(scorer)
     df = df.with_columns(
-        score=pl.col("plaintext").map_elements(
-            lambda plaintext: scorer.score(plaintext), return_dtype=pl.Float64
-        )
+        score=pl.col("plaintext").map_elements(lambda plaintext: scorer.score(plaintext), return_dtype=pl.Float64)
     )
     return df.bottom_k(top_n if top_n is not None else len(df), by="score")

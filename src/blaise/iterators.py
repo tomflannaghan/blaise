@@ -21,7 +21,5 @@ def _product_index_ordered(index_sum: int, target_index_sum: int, lists: list[li
         next_index_sum = index_sum - (len(lists[0]) - 1)
         min_index = max(target_index_sum - next_index_sum, 0)
         for i, val in enumerate(lists[0][min_index : target_index_sum + 1]):
-            for sol in _product_index_ordered(
-                next_index_sum, target_index_sum - i, lists[1:]
-            ):
+            for sol in _product_index_ordered(next_index_sum, target_index_sum - i, lists[1:]):
                 yield (val,) + sol

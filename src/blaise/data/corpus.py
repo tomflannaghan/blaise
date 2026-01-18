@@ -1,8 +1,10 @@
 """Loads large bodies of text"""
 
-from io import BytesIO
 import tarfile
+from io import BytesIO
+
 import requests
+
 from blaise.data.core import load_data, save_data
 
 _DATA_TYPE = "corpus"
@@ -31,17 +33,13 @@ def _generate_known_corpus(name) -> str | None:
 
 def save_corpus(data: str, name: str):
     if name in _KNOWN_NAMES:
-        raise ValueError(
-            f"Cannot use a known corpus name: {', '.join(_KNOWN_NAMES.keys())}"
-        )
+        raise ValueError(f"Cannot use a known corpus name: {', '.join(_KNOWN_NAMES.keys())}")
     save_data(data, _DATA_TYPE, "en_wiki")
 
 
 def download_en_wiki() -> str:
     print("Downloading en_wiki")
-    req = requests.get(
-        "https://github.com/LGDoor/Dump-of-Simple-English-Wiki/raw/refs/heads/master/corpus.tgz"
-    )
+    req = requests.get("https://github.com/LGDoor/Dump-of-Simple-English-Wiki/raw/refs/heads/master/corpus.tgz")
     req.raise_for_status()
     print("Download succeeded")
     with tarfile.open(fileobj=BytesIO(req.content), mode="r") as f:

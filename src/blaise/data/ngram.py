@@ -1,7 +1,7 @@
-from blaise.strings.ngram import calculate_ngrams
-from blaise.strings import normalize_string
 from blaise.data.core import load_data, save_data
 from blaise.data.corpus import load_corpus
+from blaise.strings import normalize_string
+from blaise.strings.ngram import calculate_ngrams
 
 
 def load_ngram_dist(name: str, n: int) -> dict[str, float]:

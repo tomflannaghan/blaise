@@ -1,7 +1,8 @@
 from collections import Counter
-from blaise.strings import normalize_string
+
 from blaise.data.core import load_data, save_data
 from blaise.data.corpus import load_corpus
+from blaise.strings import normalize_string
 
 
 def load_word_dist(name: str, overwrite=False) -> dict[str, float]:
