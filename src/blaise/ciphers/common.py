@@ -1,28 +1,38 @@
-from typing import Callable
+from abc import abstractmethod, ABC
+from typing import Any
 
 from blaise.scores.base import Scorer, as_scorer
 import polars as pl
 
 
-def bruteforce_crack(
-    ciphertext: str,
-    keys: list,
-    decrypt: Callable,
-    scorer: Scorer | None = None,
-    top_n: int | None = None,
-) -> pl.DataFrame:
-    """
-    A bruteforce attempt to crack a cipher by trying all keys in a list. Returns a dataframe of the
-    top n results (or all of the results if not specified), ordered by score (best first).
-    """
-    df = pl.from_dict({"key": keys})
-    df = df.with_columns(
-        plaintext=pl.col("key").map_elements(
-            lambda key: decrypt(ciphertext=ciphertext, key=key),
-            return_dtype=pl.String,
+class Cipher(ABC):
+    @abstractmethod
+    def encrypt(self, plaintext: str, key: Any) -> str:
+        """Encrypts a string using the cipher."""
+
+    @abstractmethod
+    def decrypt(self, ciphertext: str, key: Any) -> str:
+        """Decrypts a string using the cipher."""
+
+    def bruteforce_crack(
+        self,
+        ciphertext: str,
+        keys: list,
+        scorer: Scorer | None = None,
+        top_n: int | None = None,
+    ) -> pl.DataFrame:
+        """
+        A bruteforce attempt to crack a cipher by trying all keys in a list. Returns a dataframe of the
+        top n results (or all of the results if not specified), ordered by score (best first).
+        """
+        df = pl.from_dict({"key": keys})
+        df = df.with_columns(
+            plaintext=pl.col("key").map_elements(
+                lambda key: self.decrypt(ciphertext=ciphertext, key=key),
+                return_dtype=pl.String,
+            )
         )
-    )
-    return _rank_results(df, scorer=scorer, top_n=top_n)
+        return _rank_results(df, scorer=scorer, top_n=top_n)
 
 
 def _rank_results(

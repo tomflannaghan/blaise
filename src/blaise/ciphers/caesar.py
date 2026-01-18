@@ -1,63 +1,62 @@
-from blaise.ciphers.common import bruteforce_crack
+from blaise.scores.base import Scorer
+from blaise.ciphers.common import Cipher
 import polars as pl
 
 from blaise.strings import normalize_string
 
 
-def caesar_encrypt(plaintext: str, key: int) -> str:
-    """
-    Applies a Caesar shift to plaintext. Positive key value is a right shift, negative is a left shift.
-    """
-    plaintext = normalize_string(plaintext)
-    return "".join(chr(ord("A") + (ord(c) - ord("A") + key) % 26) for c in plaintext)
+class Caesar(Cipher):
+    def encrypt(self, plaintext: str, key: int) -> str:
+        """
+        Applies a Caesar shift to plaintext. Positive key value is a right shift, negative is a left shift.
+        """
+        plaintext = normalize_string(plaintext)
+        return "".join(
+            chr(ord("A") + (ord(c) - ord("A") + key) % 26) for c in plaintext
+        )
 
+    def decrypt(self, ciphertext: str, key: int) -> str:
+        """
+        Decrypts a Caesar shift that has been applied. Positive key value indicates that it was
+        encrypted with a right shift, and negative with a left shift.
+        """
+        ciphertext = normalize_string(ciphertext)
+        return self.encrypt(ciphertext, key=-key)
 
-def caesar_decrypt(ciphertext: str, key: int) -> str:
-    """
-    Decrypts a Caesar shift that has been applied. Positive key value indicates that it was
-    encrypted with a right shift, and negative with a left shift.
-    """
-    ciphertext = normalize_string(ciphertext)
-    return caesar_encrypt(ciphertext, key=-key)
+    def crack(
+        self, ciphertext, scorer: Scorer | None = None, top_n: int | None = None
+    ) -> pl.DataFrame:
+        """
+        Cracks a Caesar shift cipher. It will try all shifts and score them with an ngram scorer.
 
+        Parameters
+        ----------
+        ciphertext : str
+            The ciphertext to crack.
+        scorer : optional
+            Scorer function to evaluate plaintext candidates.
+        top_n : optional
+            Number of top results to return.
 
-def caesar_crack(
-    ciphertext,
-    scorer=None,
-    top_n=None,
-) -> pl.DataFrame:
-    """
-    Cracks a Caesar shift cipher. It will try all shifts and score them with an ngram scorer.
+        Example
+        -------
 
-    Parameters
-    ----------
-    ciphertext : str
-        The ciphertext to crack.
-    scorer : optional
-        Scorer function to evaluate plaintext candidates.
-    top_n : optional
-        Number of top results to return.
+        >>> Caesar().crack('EBIILTLOIA', top_n=3)
+        shape: (3, 3)
+        ┌─────┬────────────┬──────────┐
+        │ key ┆ plaintext  ┆ score    │
+        │ --- ┆ ---        ┆ ---      │
+        │ i64 ┆ str        ┆ f64      │
+        ╞═════╪════════════╪══════════╡
+        │ 23  ┆ HELLOWORLD ┆ 1.535752 │
+        │ 8   ┆ WTAADLDGAS ┆ 1.995915 │
+        │ 19  ┆ LIPPSASVPH ┆ 2.051054 │
+        └─────┴────────────┴──────────┘
 
-    Example
-    -------
-
-    >>> caesar_crack('EBIILTLOIA', top_n=3)
-    shape: (3, 3)
-    ┌─────┬────────────┬──────────┐
-    │ key ┆ plaintext  ┆ score    │
-    │ --- ┆ ---        ┆ ---      │
-    │ i64 ┆ str        ┆ f64      │
-    ╞═════╪════════════╪══════════╡
-    │ 23  ┆ HELLOWORLD ┆ 1.535752 │
-    │ 8   ┆ WTAADLDGAS ┆ 1.995915 │
-    │ 19  ┆ LIPPSASVPH ┆ 2.051054 │
-    └─────┴────────────┴──────────┘
-
-    """
-    return bruteforce_crack(
-        ciphertext=ciphertext,
-        keys=list(range(26)),
-        decrypt=caesar_decrypt,
-        scorer=scorer,
-        top_n=top_n,
-    )
+        """
+        return self.bruteforce_crack(
+            ciphertext=ciphertext,
+            keys=list(range(26)),
+            scorer=scorer,
+            top_n=top_n,
+        )

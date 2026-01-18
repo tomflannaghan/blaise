@@ -7,7 +7,7 @@ import polars as pl
 class Segmenter:
     def __init__(
         self,
-        word_dist: str | list[str] | dict[str, float] = 'en_wiki',
+        word_dist: str | list[str] | dict[str, float] = "en_wiki",
         n_branch_limit: int | None = None,
         length_power: float = 1,
     ):

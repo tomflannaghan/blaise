@@ -8,7 +8,7 @@ is the same as the primary fill character.
 
 import pytest
 
-from blaise.ciphers.playfair import _to_bigrams, playfair_decrypt, playfair_encrypt
+from blaise.ciphers.playfair import _to_bigrams, Playfair
 
 
 @pytest.mark.parametrize(
@@ -43,7 +43,7 @@ def test_to_bigrams(input_str, fill_char, alt_fill_char, expected):
 def test_playfair_encrypt():
     # The wikipedia example
     assert (
-        playfair_encrypt("hide the gold in the tree stump", "playfairexample")
+        Playfair().encrypt("hide the gold in the tree stump", "playfairexample")
         == "BMODZBXDNABEKUDMUIXMMOUVIF"
     )
 
@@ -51,12 +51,12 @@ def test_playfair_encrypt():
 def test_playfair_decrypt():
     # The wikipedia example
     assert (
-        playfair_decrypt("BMODZBXDNABEKUDMUIXMMOUVIF", "playfairexample")
+        Playfair().decrypt("BMODZBXDNABEKUDMUIXMMOUVIF", "playfairexample")
         == "HIDETHEGOLDINTHETREXESTUMP"
     )
 
     assert (
-        playfair_decrypt(
+        Playfair().decrypt(
             "BMODZBXDNABEKUDMUIXMMOUVIF", "playfairexample", remove_fill=True
         )
         == "HIDETHEGOLDINTHETREESTUMP"

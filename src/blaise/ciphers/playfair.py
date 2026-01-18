@@ -1,66 +1,66 @@
+from blaise.ciphers.common import Cipher
 from blaise.strings import check_is_alpha, normalize_string
 
 
-_DEFAULT_ALPHABET = "ABCDEFGHIKLMNOPQRSTUVWXYZ"
+class Playfair(Cipher):
+    def __init__(self, fill_char="X", alt_fill_char="Q", missing_letter: str = "J->I"):
+        self._missing_letter, self._missing_letter_replacement = missing_letter.split(
+            "->"
+        )
+        self._alphabet = [
+            c for c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" if c != self._missing_letter
+        ]
+        self._fill_char = fill_char
+        self._alt_fill_char = alt_fill_char
 
+    def encrypt(self, plaintext: str, key: str) -> str:
+        """
+        Encrypts using the Playfair cipher.
 
-def playfair_encrypt(
-    plaintext: str,
-    key: str,
-    alphabet=_DEFAULT_ALPHABET,
-    fill_char: str = "X",
-    alt_fill_char: str = "Q",
-) -> str:
-    """
-    Encrypts using the Playfair cipher.
-
-    >>> playfair_encrypt("hide the gold in the tree stump", "playfairexample")
-    'BMODZBXDNABEKUDMUIXMMOUVIF'
-    """
-    key = _to_key(key, alphabet)
-    plaintext = normalize_string(plaintext).replace("J", "I")
-    return _playfair_encrypt(
-        _to_bigrams(plaintext, fill_char=fill_char, alt_fill_char=alt_fill_char), key
-    )
-
-
-def playfair_decrypt(
-    ciphertext: str,
-    key: str,
-    alphabet=_DEFAULT_ALPHABET,
-    remove_fill=False,
-    fill_char: str = "X",
-    alt_fill_char: str = "Q",
-) -> str:
-    """
-    Decrypts using the Playfair cipher. Will fail if:
-    - Any bigram is a repeat
-    - Any character in the ciphertext isn't present in the alphabet provided
-
-    >>> playfair_decrypt("BMODZBXDNABEKUDMUIXMMOUVIF", "playfairexample")
-    'HIDETHEGOLDINTHETREXESTUMP'
-
-    Optionally there is a heuristic approach to removing fill characters. It
-    isn't perfect - will be caught out by a legitimate EX EC for example - would
-    remove the X in that case.
-
-    >>> playfair_decrypt("BMODZBXDNABEKUDMUIXMMOUVIF", "playfairexample", remove_fill=True)
-    'HIDETHEGOLDINTHETREESTUMP'
-
-    """
-    key = _to_key(key, alphabet)
-    ciphertext = normalize_string(ciphertext)
-    if len(ciphertext) % 2 != 0:
-        raise ValueError(f"Requires even length ciphertext: {ciphertext}")
-
-    # Reverse the key - it's equivalent to decrypting
-    plaintext = _playfair_encrypt(zip(ciphertext[::2], ciphertext[1::2]), key[::-1])
-    if remove_fill:
-        plaintext = _remove_fill(
-            plaintext, fill_char=fill_char, alt_fill_char=alt_fill_char
+        >>> Playfair().encrypt("hide the gold in the tree stump", "playfairexample")
+        'BMODZBXDNABEKUDMUIXMMOUVIF'
+        """
+        key = _to_key(key, self._alphabet)
+        plaintext = normalize_string(plaintext).replace(
+            self._missing_letter, self._missing_letter_replacement
+        )
+        return _playfair_encrypt(
+            _to_bigrams(
+                plaintext, fill_char=self._fill_char, alt_fill_char=self._alt_fill_char
+            ),
+            key,
         )
 
-    return plaintext
+    def decrypt(self, ciphertext: str, key: str, remove_fill=False) -> str:
+        """
+        Decrypts using the Playfair cipher. Will fail if:
+        - Any bigram is a repeat
+        - Any character in the ciphertext isn't present in the alphabet provided
+
+        >>> Playfair().decrypt("BMODZBXDNABEKUDMUIXMMOUVIF", "playfairexample")
+        'HIDETHEGOLDINTHETREXESTUMP'
+
+        Optionally there is a heuristic approach to removing fill characters. It
+        isn't perfect - will be caught out by a legitimate EX EC for example - would
+        remove the X in that case.
+
+        >>> Playfair().decrypt("BMODZBXDNABEKUDMUIXMMOUVIF", "playfairexample", remove_fill=True)
+        'HIDETHEGOLDINTHETREESTUMP'
+
+        """
+        key = _to_key(key, self._alphabet)
+        ciphertext = normalize_string(ciphertext)
+        if len(ciphertext) % 2 != 0:
+            raise ValueError(f"Requires even length ciphertext: {ciphertext}")
+
+        # Reverse the key - it's equivalent to decrypting
+        plaintext = _playfair_encrypt(zip(ciphertext[::2], ciphertext[1::2]), key[::-1])
+        if remove_fill:
+            plaintext = _remove_fill(
+                plaintext, fill_char=self._fill_char, alt_fill_char=self._alt_fill_char
+            )
+
+        return plaintext
 
 
 def _playfair_encrypt(bigrams, key) -> str:
