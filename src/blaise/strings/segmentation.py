@@ -73,8 +73,6 @@ class Segmenter:
     └──────────────┴──────────┘
     """
 
-
-
     def __init__(
         self,
         word_dist: str | list[str] | dict[str, float] = "en_wiki",
