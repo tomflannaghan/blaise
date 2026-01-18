@@ -1,0 +1,263 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>String Manipulation &mdash; blaise  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Scorers" href="scores.html" />
+    <link rel="prev" title="Ciphers" href="ciphers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            blaise
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ciphers.html">Ciphers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">String Manipulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#blaise.strings.Segmenter"><code class="docutils literal notranslate"><span class="pre">Segmenter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blaise.strings.Segmenter.segment"><code class="docutils literal notranslate"><span class="pre">Segmenter.segment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blaise.strings.calculate_ngrams"><code class="docutils literal notranslate"><span class="pre">calculate_ngrams()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blaise.strings.check_is_alpha"><code class="docutils literal notranslate"><span class="pre">check_is_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blaise.strings.is_alpha"><code class="docutils literal notranslate"><span class="pre">is_alpha()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blaise.strings.normalize_string"><code class="docutils literal notranslate"><span class="pre">normalize_string()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#blaise.strings.restore_string"><code class="docutils literal notranslate"><span class="pre">restore_string()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scores.html">Scorers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">blaise</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">String Manipulation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/strings.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-blaise.strings">
+<span id="string-manipulation"></span><h1>String Manipulation<a class="headerlink" href="#module-blaise.strings" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="blaise.strings.Segmenter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blaise.strings.</span></span><span class="sig-name descname"><span class="pre">Segmenter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_dist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'en_wiki'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_branch_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_power</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blaise.strings.Segmenter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A string segmenter that identifies word boundaries in a string of letters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>word_dist</strong> (<em>str</em><em> | </em><em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>) – <p>The source of word probabilities used for segmentation.
+* If a string, it is interpreted as a word dist name and loaded via</p>
+<blockquote>
+<div><p><code class="xref py py-func docutils literal notranslate"><span class="pre">load_word_dist()</span></code>.</p>
+</div></blockquote>
+<ul>
+<li><dl class="simple">
+<dt>If a list of strings, each word is assigned an equal probability</dt><dd><p>(i.e., a uniform distribution).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If a dictionary mapping words to probabilities, the values are</dt><dd><p>normalised so that the total probability sums to 1.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p></li>
+<li><p><strong>n_branch_limit</strong> (<em>int</em><em> | </em><em>None</em><em>, </em><em>optional</em>) – When set, limits the number of candidate segmentations kept at
+each recursion step to the top <code class="docutils literal notranslate"><span class="pre">n_branch_limit</span></code> by score.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code> (the default), all candidates are considered.</p></li>
+<li><p><strong>length_power</strong> (<em>float</em>) – This controls how much we favour long words over short words.
+A value of 1 means we are agnostic to length. A value of greater than
+one means we prefer longer words over shorter words.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>If passed a list, words get equal probability:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Segmenter</span><span class="p">([</span><span class="s1">&#39;HELLO&#39;</span><span class="p">,</span> <span class="s1">&#39;WORLD&#39;</span><span class="p">,</span> <span class="s1">&#39;HELL&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">segment</span><span class="p">(</span><span class="s1">&#39;HELLOWORLD&#39;</span><span class="p">)</span>
+<span class="go">shape: (2, 2)</span>
+<span class="go">┌──────────────┬───────────┐</span>
+<span class="go">│ text         ┆ score     │</span>
+<span class="go">│ ---          ┆ ---       │</span>
+<span class="go">│ str          ┆ f64       │</span>
+<span class="go">╞══════════════╪═══════════╡</span>
+<span class="go">│ HELL O WORLD ┆ 13.862944 │</span>
+<span class="go">│ HELLO WORLD  ┆ 13.862944 │</span>
+<span class="go">└──────────────┴───────────┘</span>
+</pre></div>
+</div>
+<p>If passed a dict, it uses the weights in the dict as probabilities.
+Results are returned with most likely first:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Segmenter</span><span class="p">({</span><span class="s1">&#39;HELLO&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;WORLD&#39;</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="s1">&#39;HELL&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">})</span><span class="o">.</span><span class="n">segment</span><span class="p">(</span><span class="s1">&#39;HELLOWORLD&#39;</span><span class="p">)</span>
+<span class="go">shape: (2, 2)</span>
+<span class="go">┌──────────────┬───────────┐</span>
+<span class="go">│ text         ┆ score     │</span>
+<span class="go">│ ---          ┆ ---       │</span>
+<span class="go">│ str          ┆ f64       │</span>
+<span class="go">╞══════════════╪═══════════╡</span>
+<span class="go">│ HELLO WORLD  ┆ 10.397208 │</span>
+<span class="go">│ HELL O WORLD ┆ 16.364956 │</span>
+<span class="go">└──────────────┴───────────┘</span>
+</pre></div>
+</div>
+<p>We can also pass in a length power to make the algorithm favour longer words:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Segmenter</span><span class="p">([</span><span class="s1">&#39;HELLO&#39;</span><span class="p">,</span> <span class="s1">&#39;WORLD&#39;</span><span class="p">,</span> <span class="s1">&#39;HELL&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">],</span> <span class="n">length_power</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">segment</span><span class="p">(</span><span class="s1">&#39;HELLOWORLD&#39;</span><span class="p">)</span>
+<span class="go">shape: (2, 2)</span>
+<span class="go">┌──────────────┬──────────┐</span>
+<span class="go">│ text         ┆ score    │</span>
+<span class="go">│ ---          ┆ ---      │</span>
+<span class="go">│ str          ┆ f64      │</span>
+<span class="go">╞══════════════╪══════════╡</span>
+<span class="go">│ HELLO WORLD  ┆ 6.199697 │</span>
+<span class="go">│ HELL O WORLD ┆ 7.258732 │</span>
+<span class="go">└──────────────┴──────────┘</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="blaise.strings.Segmenter.segment">
+<span class="sig-name descname"><span class="pre">segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#blaise.strings.Segmenter.segment" title="Link to this definition"></a></dt>
+<dd><p>Segments text into words.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blaise.strings.calculate_ngrams">
+<span class="sig-prename descclassname"><span class="pre">blaise.strings.</span></span><span class="sig-name descname"><span class="pre">calculate_ngrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#blaise.strings.calculate_ngrams" title="Link to this definition"></a></dt>
+<dd><p>Compute the n-gram frequencies of a string.</p>
+<p>The function slides a window of length n over the input string and
+counts how many times each distinct n-character substring occurs.
+The frequencies are returned as a dictionary mapping each n-gram to
+its relative frequency (count divided by the total number of
+n-grams).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calculate_ngrams</span><span class="p">(</span><span class="s2">&quot;ABCABC&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">{&#39;ABC&#39;: 0.5, &#39;BCA&#39;: 0.25, &#39;CAB&#39;: 0.25}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blaise.strings.check_is_alpha">
+<span class="sig-prename descclassname"><span class="pre">blaise.strings.</span></span><span class="sig-name descname"><span class="pre">check_is_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blaise.strings.check_is_alpha" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blaise.strings.is_alpha">
+<span class="sig-prename descclassname"><span class="pre">blaise.strings.</span></span><span class="sig-name descname"><span class="pre">is_alpha</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#blaise.strings.is_alpha" title="Link to this definition"></a></dt>
+<dd><p>Returns True if all letters are in a-z or A-Z.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blaise.strings.normalize_string">
+<span class="sig-prename descclassname"><span class="pre">blaise.strings.</span></span><span class="sig-name descname"><span class="pre">normalize_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#blaise.strings.normalize_string" title="Link to this definition"></a></dt>
+<dd><p>Normalize a Unicode string to uppercase ASCII letters A-Z.</p>
+<p>The function performs the following steps:
+1. Normalizes the string to NFKD form, decomposing characters.
+2. Encodes to ASCII, ignoring characters that cannot be represented.
+3. Decodes back to a string.
+4. Converts the result to uppercase.
+5. Removes any characters that are not A-Z.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>str</em>) – The input Unicode string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The normalized string containing only uppercase ASCII letters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="blaise.strings.restore_string">
+<span class="sig-prename descclassname"><span class="pre">blaise.strings.</span></span><span class="sig-name descname"><span class="pre">restore_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_string</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">result_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blaise.strings.restore_string" title="Link to this definition"></a></dt>
+<dd><p>Restores the non-letter characters present in the input string into the result string.
+The strings must have the same number of letters and the result string must already
+be normalized. Note, does not restore the case of the input string.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ciphers.html" class="btn btn-neutral float-left" title="Ciphers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="scores.html" class="btn btn-neutral float-right" title="Scorers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Tom Flannaghan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
