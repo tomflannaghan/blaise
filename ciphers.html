@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ciphers &mdash; blaise  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="String Manipulation" href="strings.html" />
+    <link rel="prev" title="Welcome to blaise’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            blaise
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ciphers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#blaise.ciphers.Caesar"><code class="docutils literal notranslate"><span class="pre">Caesar</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blaise.ciphers.Caesar.crack"><code class="docutils literal notranslate"><span class="pre">Caesar.crack()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blaise.ciphers.Caesar.decrypt"><code class="docutils literal notranslate"><span class="pre">Caesar.decrypt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blaise.ciphers.Caesar.encrypt"><code class="docutils literal notranslate"><span class="pre">Caesar.encrypt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blaise.ciphers.Playfair"><code class="docutils literal notranslate"><span class="pre">Playfair</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blaise.ciphers.Playfair.decrypt"><code class="docutils literal notranslate"><span class="pre">Playfair.decrypt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blaise.ciphers.Playfair.encrypt"><code class="docutils literal notranslate"><span class="pre">Playfair.encrypt()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blaise.ciphers.Vigenere"><code class="docutils literal notranslate"><span class="pre">Vigenere</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#blaise.ciphers.Vigenere.crack"><code class="docutils literal notranslate"><span class="pre">Vigenere.crack()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blaise.ciphers.Vigenere.decrypt"><code class="docutils literal notranslate"><span class="pre">Vigenere.decrypt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#blaise.ciphers.Vigenere.encrypt"><code class="docutils literal notranslate"><span class="pre">Vigenere.encrypt()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="strings.html">String Manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scores.html">Scorers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">blaise</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Ciphers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ciphers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-blaise.ciphers">
+<span id="ciphers"></span><h1>Ciphers<a class="headerlink" href="#module-blaise.ciphers" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="blaise.ciphers.Caesar">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blaise.ciphers.</span></span><span class="sig-name descname"><span class="pre">Caesar</span></span><a class="headerlink" href="#blaise.ciphers.Caesar" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Cipher</span></code></p>
+<p>The Caesar Cipher is the simplest of ciphers, where each letter is shifted by a
+fixed amount in either direction.
+Wikipedia page: <a class="reference external" href="https://en.wikipedia.org/wiki/Caesar_cipher">https://en.wikipedia.org/wiki/Caesar_cipher</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blaise.ciphers.Caesar.crack">
+<span class="sig-name descname"><span class="pre">crack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ciphertext</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Scorer</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#blaise.ciphers.Caesar.crack" title="Link to this definition"></a></dt>
+<dd><p>Cracks a Caesar shift cipher. It will try all shifts and score them with an ngram scorer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ciphertext</strong> (<em>str</em>) – The ciphertext to crack.</p></li>
+<li><p><strong>scorer</strong> (<em>optional</em>) – Scorer function to evaluate plaintext candidates.</p></li>
+<li><p><strong>top_n</strong> (<em>optional</em>) – Number of top results to return.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Caesar</span><span class="p">()</span><span class="o">.</span><span class="n">crack</span><span class="p">(</span><span class="s1">&#39;EBIILTLOIA&#39;</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">shape: (3, 3)</span>
+<span class="go">┌─────┬────────────┬──────────┐</span>
+<span class="go">│ key ┆ plaintext  ┆ score    │</span>
+<span class="go">│ --- ┆ ---        ┆ ---      │</span>
+<span class="go">│ i64 ┆ str        ┆ f64      │</span>
+<span class="go">╞═════╪════════════╪══════════╡</span>
+<span class="go">│ 23  ┆ HELLOWORLD ┆ 1.535752 │</span>
+<span class="go">│ 8   ┆ WTAADLDGAS ┆ 1.995915 │</span>
+<span class="go">│ 19  ┆ LIPPSASVPH ┆ 2.051054 │</span>
+<span class="go">└─────┴────────────┴──────────┘</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blaise.ciphers.Caesar.decrypt">
+<span class="sig-name descname"><span class="pre">decrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ciphertext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#blaise.ciphers.Caesar.decrypt" title="Link to this definition"></a></dt>
+<dd><p>Decrypts a Caesar shift that has been applied. Positive key value indicates that it was
+encrypted with a right shift, and negative with a left shift.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blaise.ciphers.Caesar.encrypt">
+<span class="sig-name descname"><span class="pre">encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plaintext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#blaise.ciphers.Caesar.encrypt" title="Link to this definition"></a></dt>
+<dd><p>Applies a Caesar shift to plaintext. Positive key value is a right shift, negative is a left shift.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blaise.ciphers.Playfair">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blaise.ciphers.</span></span><span class="sig-name descname"><span class="pre">Playfair</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fill_char</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'X'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_fill_char</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Q'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_letter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'J-&gt;I'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#blaise.ciphers.Playfair" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Cipher</span></code></p>
+<p>Wikipedia page: <a class="reference external" href="https://en.wikipedia.org/wiki/Playfair_cipher">https://en.wikipedia.org/wiki/Playfair_cipher</a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blaise.ciphers.Playfair.decrypt">
+<span class="sig-name descname"><span class="pre">decrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ciphertext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_fill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#blaise.ciphers.Playfair.decrypt" title="Link to this definition"></a></dt>
+<dd><p>Decrypts using the Playfair cipher. Will fail if:
+- Any bigram is a repeat
+- Any character in the ciphertext isn’t present in the alphabet provided</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Playfair</span><span class="p">()</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="s2">&quot;BMODZBXDNABEKUDMUIXMMOUVIF&quot;</span><span class="p">,</span> <span class="s2">&quot;playfairexample&quot;</span><span class="p">)</span>
+<span class="go">&#39;HIDETHEGOLDINTHETREXESTUMP&#39;</span>
+</pre></div>
+</div>
+<p>Optionally there is a heuristic approach to removing fill characters. It
+isn’t perfect - will be caught out by a legitimate EX EC for example - would
+remove the X in that case.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Playfair</span><span class="p">()</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="s2">&quot;BMODZBXDNABEKUDMUIXMMOUVIF&quot;</span><span class="p">,</span> <span class="s2">&quot;playfairexample&quot;</span><span class="p">,</span> <span class="n">remove_fill</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&#39;HIDETHEGOLDINTHETREESTUMP&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blaise.ciphers.Playfair.encrypt">
+<span class="sig-name descname"><span class="pre">encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plaintext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#blaise.ciphers.Playfair.encrypt" title="Link to this definition"></a></dt>
+<dd><p>Encrypts using the Playfair cipher.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Playfair</span><span class="p">()</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="s2">&quot;hide the gold in the tree stump&quot;</span><span class="p">,</span> <span class="s2">&quot;playfairexample&quot;</span><span class="p">)</span>
+<span class="go">&#39;BMODZBXDNABEKUDMUIXMMOUVIF&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="blaise.ciphers.Vigenere">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">blaise.ciphers.</span></span><span class="sig-name descname"><span class="pre">Vigenere</span></span><a class="headerlink" href="#blaise.ciphers.Vigenere" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Cipher</span></code></p>
+<p>The Vigenère Cipher is a straightforward cipher formed by interleaving Caesar shifts.
+Wikipedia page: <a class="reference external" href="https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher">https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher</a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="blaise.ciphers.Vigenere.crack">
+<span class="sig-name descname"><span class="pre">crack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ciphertext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">range(3,</span> <span class="pre">8)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">top_n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_trials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scorer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'en_wiki'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#blaise.ciphers.Vigenere.crack" title="Link to this definition"></a></dt>
+<dd><p>Cracks a Vigenère cipher.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ciphertext</strong> (<em>str</em>) – The ciphertext to crack. Note that non-alphabetic characters are
+ignored.</p></li>
+<li><p><strong>key_length</strong> (<em>int</em><em> | </em><em>Iterable</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – The length(s) of the key to try.  If an integer is supplied,
+the function will attempt to crack a key of that exact length.
+If an iterable is supplied, the function will iterate over
+each length in the iterable.  The default is <code class="docutils literal notranslate"><span class="pre">range(3,</span> <span class="pre">8)</span></code>,
+which tries key lengths 3 through 7.</p></li>
+<li><p><strong>top_n</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of results to return.  Results are sorted
+by the provided <code class="docutils literal notranslate"><span class="pre">scorer</span></code>.</p></li>
+<li><p><strong>n_trials</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of key combinations to evaluate for each
+<code class="docutils literal notranslate"><span class="pre">key_length</span></code>.  This limits the search space for long keys.</p></li>
+<li><p><strong>scorer</strong> (<em>Scorer</em><em>, </em><em>optional</em>) – The scorer to use for assessing the quality of the output
+plaintext.</p></li>
+<li><p><strong>dist</strong> (<em>The frequency distribution to use for scoring the Caesar step.</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame with columns <code class="docutils literal notranslate"><span class="pre">key</span></code> and <code class="docutils literal notranslate"><span class="pre">plaintext</span></code> containing
+the best candidate keys and their corresponding decrypted
+plaintexts.  The DataFrame is sorted by score in descending
+order and limited to <code class="docutils literal notranslate"><span class="pre">top_n</span></code> rows.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>polars.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The function works by splitting the ciphertext into <code class="docutils literal notranslate"><span class="pre">key_length</span></code>
+interleaved subsequences and cracking each subsequence with a
+Caesar-cipher cracker.  The resulting candidate keys are then
+combined using a Cartesian product to form full Vigenère keys
+in order of likelihood based on frequency analysis of each
+interleaved Caesar shift. The search is truncated after
+<code class="docutils literal notranslate"><span class="pre">n_trials</span></code> combinations to keep runtime reasonable for long keys.</p>
+<p class="rubric">Examples</p>
+<p>Here is an example with a relatively short ciphertext. Note that
+the correct decrypt is not the top result because the ciphertext
+is too short for very accurate decryption.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Vigenere</span><span class="p">()</span><span class="o">.</span><span class="n">crack</span><span class="p">(</span><span class="s2">&quot;DLCFMEORCBIASTFOV&quot;</span><span class="p">,</span> <span class="n">key_length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">top_n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">shape: (3, 3)</span>
+<span class="go">┌─────┬───────────────────┬──────────┐</span>
+<span class="go">│ key ┆ plaintext         ┆ score    │</span>
+<span class="go">│ --- ┆ ---               ┆ ---      │</span>
+<span class="go">│ str ┆ str               ┆ f64      │</span>
+<span class="go">╞═════╪═══════════════════╪══════════╡</span>
+<span class="go">│ OAY ┆ PLERMGARENICETHAV ┆ 1.135415 │</span>
+<span class="go">│ KEY ┆ THEVIGENERECIPHER ┆ 1.157981 │</span>
+<span class="go">│ OEY ┆ PHERIGANENECEPHAR ┆ 1.158325 │</span>
+<span class="go">└─────┴───────────────────┴──────────┘</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blaise.ciphers.Vigenere.decrypt">
+<span class="sig-name descname"><span class="pre">decrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ciphertext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#blaise.ciphers.Vigenere.decrypt" title="Link to this definition"></a></dt>
+<dd><p>Decrypt <code class="docutils literal notranslate"><span class="pre">ciphertext</span></code> that was encrypted with the Vigenère cipher.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ciphertext</strong> – The text to decrypt.</p></li>
+<li><p><strong>key</strong> – The decryption key. It must consist only of alphabetic
+characters; the function will raise a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> if this
+condition is not met.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The original plaintext recovered from <code class="docutils literal notranslate"><span class="pre">ciphertext</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Vigenere</span><span class="p">()</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="s2">&quot;MSZQC&quot;</span><span class="p">,</span> <span class="s2">&quot;FOO&quot;</span><span class="p">)</span>
+<span class="go">&#39;HELLO&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="blaise.ciphers.Vigenere.encrypt">
+<span class="sig-name descname"><span class="pre">encrypt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plaintext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#blaise.ciphers.Vigenere.encrypt" title="Link to this definition"></a></dt>
+<dd><p>Encrypt <code class="docutils literal notranslate"><span class="pre">plaintext</span></code> using the Vigenère cipher.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plaintext</strong> – The text to encrypt.</p></li>
+<li><p><strong>key</strong> – The encryption key. It must consist only of alphabetic
+characters; the function will raise a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> if this
+condition is not met.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ciphertext produced by applying the Vigenère shift to each
+alphabetic character of <code class="docutils literal notranslate"><span class="pre">plaintext</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Vigenere</span><span class="p">()</span><span class="o">.</span><span class="n">encrypt</span><span class="p">(</span><span class="s2">&quot;HELLO&quot;</span><span class="p">,</span> <span class="s2">&quot;FOO&quot;</span><span class="p">)</span>
+<span class="go">&#39;MSZQC&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to blaise’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="strings.html" class="btn btn-neutral float-right" title="String Manipulation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Tom Flannaghan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
